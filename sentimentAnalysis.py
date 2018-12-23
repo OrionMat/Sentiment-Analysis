@@ -35,3 +35,8 @@ posTot, posList = findPosWords(textWords)
 posText = " ".join(posList)
 
 print(posText)
+
+
+
+
+# delete all repititions, all tenses and alternations of each word (people, ), remove capitals, delete words like 'and' etc
