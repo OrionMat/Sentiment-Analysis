@@ -2,31 +2,36 @@ import nltk
 import vaderSentiment
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-
+# input: paragraph (string) 
+# output: average sentiment of the paragraph and a list containing a tuple of each sentence with its corresponding sentiment
+# sentiment is rating between -5 (VERY negative) and 5 (VERY positive)
 def paragraphSentiment(paragraph):
     analyzer = SentimentIntensityAnalyzer()
     sentence_list = nltk.sent_tokenize(paragraph)
-    sentiment_sentence_list = sentence_list
+    sentiment_list = []
     sentence_Sentiments = 0.0
-    for idx, sentence in enumerate(sentence_list):
+    for sentence in sentence_list:
             vs = analyzer.polarity_scores(sentence)
-            #print("{:-<100} {}".format(sentence, str(vs["compound"])))
-            sentiment_sentence_list[idx] = sentence + "=> " + str(vs["compound"]) + "."
-            sentence_Sentiments += vs["compound"]
-    para_sentiment_avg = round(sentence_Sentiments / len(sentence_list), 4)
-    sentiment_paragraph = " ".join(sentiment_sentence_list)
+            compound_sentiment = round(vs["compound"]*5, 4)
+            #print("{:-<100} {}".format(sentence, str(compound_sentiment)))
+            sentiment_list = sentiment_list + [compound_sentiment]
+            sentence_Sentiments += compound_sentiment
 
-    return para_sentiment_avg, sentiment_paragraph
+    sentiment_paragraph_list = list(zip(sentence_list, sentiment_list))
+    para_sentiment_avg = sentence_Sentiments / len(sentence_list)
 
-# article file into a string
+    return para_sentiment_avg, sentiment_paragraph_list
+
+# article file to a string
 article = open("article.txt", "r")
 text = article.read()
 
-para_sentiment, modified_text = paragraphSentiment(text)
-print(text, "\n\n", modified_text, "\n\n", "average sentiment: " + str(para_sentiment*5))
+# string split into paragraphs
 
-
-
-
-#text = """It was one of the worst movies I've seen, despite good reviews. Unbelievably bad acting!! Poor direction. VERY poor production. The movie was bad. Very bad movie. VERY BAD movie!"""
-
+# paragraphs sentiment analysed
+#para_sentiments_list = []
+#for paragraph in paragraph_list:
+    #para_sentiment, modified_paragraph = paragraphSentiment(paragraph)
+    #para_sentiments_list = para_sentiments_list + para_sentiment
+para_sentiment, modified_paragraph = paragraphSentiment(text)
+print(text, "\n\n", modified_paragraph, "\n\n", "average sentiment: " + str(para_sentiment))
