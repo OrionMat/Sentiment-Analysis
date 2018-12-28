@@ -4,6 +4,11 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import MaxNLocator
+import json
+
+
+
+
 
 # input: paragraph (string) 
 # output: average sentiment of the paragraph and a list containing a tuple of each sentence with its corresponding sentiment
@@ -24,14 +29,35 @@ def calcSentiment(text):
 
     return para_sentiment_avg, sentiment_paragraph_list
 
-# article file to a string
+
+
+
+
+# text file to a string
+'''
 article = open("article.txt", "r")
 article_text = article.read()
+'''
+
+# json file to a string
+for i in range(3):
+    idx = i+1
+    
+    
+json_file = open('C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\BuzzFeed_Fake_1-Webpage.json', 'r')
+json_string = json_file.read()
+#print(json_string)
+json_dict = json.loads(json_string)
+article_text = json_dict["text"]
+#print(json_dict["text"])
+
+
+
+
 
 # string split into paragraphs
 paragraph_list = article_text.split("\n")
 paragraph_list = list(filter(None, paragraph_list))
-
 
 # paragraphs sentiment analysed
 para_sentiments_list = []
@@ -45,7 +71,15 @@ for paragraph in paragraph_list:
 sentiment_tot, modified_tot = calcSentiment(article_text)
 
 
+
+
+
 sentence_list, sentiment_list = zip(*modified_tot)
+print(modified_tot)
+
+
+
+
 
 plt.plot(np.arange(1, len(sentiment_list)+1), sentiment_list, '-s')
 plt.xlabel('Sentence index')
