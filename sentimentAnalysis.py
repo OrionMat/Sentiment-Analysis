@@ -5,10 +5,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import MaxNLocator
 import json
+import glob
+import errno
 
 
 
 
+
+# FUNCTIONS
 
 # input: paragraph (string) 
 # output: average sentiment of the paragraph and a list containing a tuple of each sentence with its corresponding sentiment
@@ -16,6 +20,12 @@ import json
 def calcSentiment(text):
     analyzer = SentimentIntensityAnalyzer()
     sentence_list = nltk.sent_tokenize(text)
+    para_sentiment_avg, sentiment_paragraph_list = 0.0, 0.0
+
+    if len(sentence_list) == 0:
+        return para_sentiment_avg, sentiment_paragraph_list
+        #raise ValueError('no sentences in the text given -> 0/0')
+
     sentiment_list = []
     sentence_Sentiments = 0.0
     for sentence in sentence_list:
@@ -33,60 +43,74 @@ def calcSentiment(text):
 
 
 
-# text file to a string
+# ANALYSIS
+
+# loops though all the fake articles
+path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
+files = glob.glob(path)
+
+article_sentiment_tot_list = []
+for file_name in files:
+    try:
+        with open(file_name, 'r') as json_file:
+            json_string = json_file.read()
+            #print(json_string)
+            json_dict = json.loads(json_string)
+            article_text = json_dict["text"]
+            #print(json_dict["text"])
+
+            # string split into paragraphs
+            paragraph_list = article_text.split("\n")
+            paragraph_list = [paragraph.strip(' ') for paragraph in paragraph_list]
+            paragraph_list = list(filter(None, paragraph_list))
+            #print(paragraph_list)
+
+            # paragraphs sentiment analysed
+            
+            para_sentiments_list = []
+            modified_paragraph_list = []
+            for paragraph in paragraph_list:
+                para_sentiment, modified_paragraph = calcSentiment(paragraph)
+                para_sentiments_list = para_sentiments_list + [para_sentiment]
+                modified_paragraph_list = modified_paragraph_list + [modified_paragraph]
+
+            # total sentiment (from all sentences)
+            article_sentiment_tot, modified_tot = calcSentiment(article_text)
+            article_sentiment_tot_list = article_sentiment_tot_list + [article_sentiment_tot]
+            
+
+    except IOError as exc:
+        if exc.errno != errno.EISDIR:
+            raise
+
+
+
+
 '''
-article = open("article.txt", "r")
-article_text = article.read()
-'''
-
-# json file to a string
-for i in range(3):
-    idx = i+1
-    
-    
-json_file = open('C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\BuzzFeed_Fake_1-Webpage.json', 'r')
-json_string = json_file.read()
-#print(json_string)
-json_dict = json.loads(json_string)
-article_text = json_dict["text"]
-#print(json_dict["text"])
-
-
-
-
-
-# string split into paragraphs
-paragraph_list = article_text.split("\n")
-paragraph_list = list(filter(None, paragraph_list))
-
-# paragraphs sentiment analysed
-para_sentiments_list = []
-modified_paragraph_list = []
-for paragraph in paragraph_list:
-    para_sentiment, modified_paragraph = calcSentiment(paragraph)
-    para_sentiments_list = para_sentiments_list + [para_sentiment]
-    modified_paragraph_list = modified_paragraph_list + [modified_paragraph]
-
-# total sentiment (from all sentences)
-sentiment_tot, modified_tot = calcSentiment(article_text)
-
-
-
-
-
 sentence_list, sentiment_list = zip(*modified_tot)
 print(modified_tot)
 
 
 
 
-
+# plot of sentiment for each sentence
 plt.plot(np.arange(1, len(sentiment_list)+1), sentiment_list, '-s')
 plt.xlabel('Sentence index')
 plt.ylabel('Sentiment Intensity')
 
+# plot of sentiment for each paragraph
 plt.figure()
 plt.plot(np.arange(1, len(para_sentiments_list)+1), para_sentiments_list, '-rs')
 plt.xlabel('Paragraph index')
 plt.ylabel('Average Sentiment Intensity')
 plt.show()
+'''
+
+# plot of sentiment for each article
+plt.figure()
+plt.plot(np.arange(1, len(article_sentiment_tot_list)+1), article_sentiment_tot_list, '-rs')
+plt.xlabel('Paragraph index')
+plt.ylabel('Average Sentiment Intensity')
+plt.show()
+
+#print(article_sentiment_tot_list)
