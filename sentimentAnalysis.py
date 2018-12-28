@@ -44,14 +44,15 @@ for paragraph in paragraph_list:
 # total sentiment (from all sentences)
 sentiment_tot, modified_tot = calcSentiment(article_text)
 
-'''
-sentence_list, sentiment_list = zip(*modified_paragraph)
 
-print("hi")
-print("\n", sentiment_list) 
+sentence_list, sentiment_list = zip(*modified_tot)
 
 plt.plot(np.arange(1, len(sentiment_list)+1), sentiment_list, '-s')
 plt.xlabel('Sentence index')
 plt.ylabel('Sentiment Intensity')
+
+plt.figure()
+plt.plot(np.arange(1, len(para_sentiments_list)+1), para_sentiments_list, '-rs')
+plt.xlabel('Paragraph index')
+plt.ylabel('Average Sentiment Intensity')
 plt.show()
-'''
