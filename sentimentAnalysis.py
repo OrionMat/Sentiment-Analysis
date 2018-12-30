@@ -85,23 +85,23 @@ def json_file_analysis(files):
 
 # ANALYSIS
 
-# loops though all the fake articles
-path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
-files = glob.glob(path)
+fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
+fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsContent\\*.json'
+fake_files = glob.glob(fake_news_path)
+fact_files = glob.glob(fact_news_path)
 
-article_sentiment_tot_list = json_file_analysis(files)
+article_sentiment_tot_list = json_file_analysis(fake_files)
+article_sentiment_tot_list = json_file_analysis(fact_files)
 
+# plot of sentiment for each article
 plt.plot(np.arange(1, len(article_sentiment_tot_list)+1), article_sentiment_tot_list, '-ro')
+#plt.figure()
+plt.plot(np.arange(1, len(article_sentiment_tot_list)+1), article_sentiment_tot_list, '-bs')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+plt.show()
 
 
-
-
-
-# loops though all the fact articles
-path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsContent\\*.json'
-files = glob.glob(path)
-
-article_sentiment_tot_list = json_file_analysis(files)
 
 '''
 sentence_list, sentiment_list = zip(*modified_tot)
@@ -122,12 +122,4 @@ plt.xlabel('Paragraph index')
 plt.ylabel('Average Sentiment Intensity')
 plt.show()
 '''
-
-# plot of sentiment for each article
-#plt.figure()
-plt.plot(np.arange(1, len(article_sentiment_tot_list)+1), article_sentiment_tot_list, '-bs')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
-plt.show()
-
 #print(article_sentiment_tot_list)
