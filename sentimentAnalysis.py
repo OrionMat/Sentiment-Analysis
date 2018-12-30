@@ -96,7 +96,9 @@ fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Ana
 fake_article_sentiment_tot_list, fake_sentence_sentiments = json_file_analysis(fake_news_path)
 real_article_sentiment_tot_list, real_sentence_sentiments = json_file_analysis(fact_news_path)
 
-#print(sentence_sentiments)
+
+
+
 
 # plot of sentiment for each article
 plt.figure("Article sentiments")
@@ -114,6 +116,10 @@ plt.plot(np.arange(1, len(real_flat_list)+1), real_flat_list, '-g')
 plt.xlabel('Sentence index')
 plt.ylabel('Average Sentiment Intensity')
 
+
+
+
+
 fake_article_sentiment_tot_list = np.asarray(fake_article_sentiment_tot_list)
 real_article_sentiment_tot_list = np.asarray(real_article_sentiment_tot_list)
 
@@ -129,26 +135,3 @@ print("real var: " + str(real_var))
 
 
 plt.show()
-
-
-
-'''
-sentence_list, sentiment_list = zip(*modified_tot)
-print(modified_tot)
-
-
-
-
-# plot of sentiment for each sentence
-plt.plot(np.arange(1, len(sentiment_list)+1), sentiment_list, '-s')
-plt.xlabel('Sentence index')
-plt.ylabel('Sentiment Intensity')
-
-# plot of sentiment for each paragraph
-plt.figure()
-plt.plot(np.arange(1, len(para_sentiments_list)+1), para_sentiments_list, '-rs')
-plt.xlabel('Paragraph index')
-plt.ylabel('Average Sentiment Intensity')
-plt.show()
-'''
-#print(article_sentiment_tot_list)
