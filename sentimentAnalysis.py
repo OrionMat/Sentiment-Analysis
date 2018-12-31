@@ -91,10 +91,14 @@ def json_file_analysis(path):
 
 # ANALYSIS
 
-fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
-fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsContent\\*.json'
-fake_article_sentiment_tot_list, fake_sentence_sentiments = json_file_analysis(fake_news_path)
-real_article_sentiment_tot_list, real_sentence_sentiments = json_file_analysis(fact_news_path)
+buzz_fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
+buzz_fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsContent\\*.json'
+
+poli_fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\PolitiFact\\FakeNewsContent\\*.json'
+poli_fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\FakeNewsNet-master\\Data\\PolitiFact\\RealNewsContent\\*.json'
+
+buzz_fake_article_sentiments, buzz_fake_sentence_sentiments = json_file_analysis(buzz_fake_news_path)
+buzz_real_article_sentiments, buzz_real_sentence_sentiments = json_file_analysis(buzz_fact_news_path)
 
 
 
@@ -102,14 +106,14 @@ real_article_sentiment_tot_list, real_sentence_sentiments = json_file_analysis(f
 
 # plot of sentiment for each article
 plt.figure("Article sentiments")
-plt.plot(np.arange(1, len(fake_article_sentiment_tot_list)+1), fake_article_sentiment_tot_list, '-ro')
-plt.plot(np.arange(1, len(real_article_sentiment_tot_list)+1), real_article_sentiment_tot_list, '-gs')
+plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), buzz_fake_article_sentiments, '-ro')
+plt.plot(np.arange(1, len(buzz_real_article_sentiments)+1), buzz_real_article_sentiments, '-gs')
 plt.xlabel('Article index')
 plt.ylabel('Average Sentiment Intensity')
 
 plt.figure("Senctence sentiments")
-fake_flat_list = [item for sublist in fake_sentence_sentiments for item in sublist]
-real_flat_list = [item for sublist in real_sentence_sentiments for item in sublist]
+fake_flat_list = [item for sublist in buzz_fake_sentence_sentiments for item in sublist]
+real_flat_list = [item for sublist in buzz_real_sentence_sentiments for item in sublist]
 plt.plot(np.arange(1, len(fake_flat_list)+1), fake_flat_list, '-r')
 plt.figure()
 plt.plot(np.arange(1, len(real_flat_list)+1), real_flat_list, '-g')
@@ -120,13 +124,13 @@ plt.ylabel('Average Sentiment Intensity')
 
 
 
-fake_article_sentiment_tot_list = np.asarray(fake_article_sentiment_tot_list)
-real_article_sentiment_tot_list = np.asarray(real_article_sentiment_tot_list)
+buzz_fake_article_sentiments = np.asarray(buzz_fake_article_sentiments)
+buzz_real_article_sentiments = np.asarray(buzz_real_article_sentiments)
 
-fake_avg = np.mean(fake_article_sentiment_tot_list)
-fake_var = np.var(fake_article_sentiment_tot_list)
-real_avg = np.mean(real_article_sentiment_tot_list)
-real_var = np.var(real_article_sentiment_tot_list)
+fake_avg = np.mean(buzz_fake_article_sentiments)
+fake_var = np.var(buzz_fake_article_sentiments)
+real_avg = np.mean(buzz_real_article_sentiments)
+real_var = np.var(buzz_real_article_sentiments)
 
 print("fake avg: " + str(fake_avg))
 print("fake var: " + str(fake_var))
