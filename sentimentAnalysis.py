@@ -84,13 +84,11 @@ def json_file_analysis(path):
 
     return article_sentiment_tot_list, sentence_sentiment_list
 
-def csv_file_analysis(path):
-    df = pandas.read_csv(path)
-    article_list = df['text'].values.tolist()
+def article_list_analysis(art_list):
     article_sentiment_tot_list = []
     sentence_sentiment_list = [] 
-    art_sub_list = random.sample(article_list, 100)  # needed as 13000 takes too long
-    for article_text in art_sub_list:
+
+    for article_text in art_list:
         article_text = str(article_text)
         paragraph_list = split_paragraphs(article_text)
         para_sentiments_list, modified_paragraph_list = paragraph_analysis(paragraph_list)  # analysis of paragraph sentiment 
@@ -101,6 +99,26 @@ def csv_file_analysis(path):
         article_sentiment_tot_list = article_sentiment_tot_list + [article_sentiment_tot]
 
     return article_sentiment_tot_list, sentence_sentiment_list
+
+def csv_file_analysis(path):
+    df = pandas.read_csv(path)
+    article_list = df['text'].values.tolist()
+    art_sub_list = random.sample(article_list, 100)  # needed as 13000 takes too long
+    article_sentiment_tot_list, sentence_sentiment_list = article_list_analysis(art_sub_list)
+    return article_sentiment_tot_list, sentence_sentiment_list
+
+def csv_file_analysis_kaggComp(path):
+    df = pandas.read_csv(path)
+    fake_df = df.loc[df['label'] == 1]
+    real_df = df.loc[df['label'] == 0]
+    article_list_fake = fake_df['text'].values.tolist()
+    article_list_real = real_df['text'].values.tolist()
+    article_list_fake = random.sample(article_list_fake, 100)  # needed as 13000 takes too long
+    article_list_real = random.sample(article_list_real, 100)  # needed as 13000 takes too long
+    article_sentiment_fake_list, sentence_sentiment_fake_list = article_list_analysis(article_list_fake)
+    article_sentiment_real_list, sentence_sentiment_real_list = article_list_analysis(article_list_real)
+    return article_sentiment_fake_list, sentence_sentiment_fake_list, article_sentiment_real_list, sentence_sentiment_real_list
+
 
 # ANALYSIS
 
@@ -117,10 +135,14 @@ poli_real_article_sentiments, poli_real_sentence_sentiments = json_file_analysis
 
 
 # Kaggle fake data set
+kagg_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\reliable-nonreliable-news-kaggle\\train.csv'
+
+kagg_fake_article_sentiments, kagg_fake_sentence_sentiments, kagg_real_article_sentiments, kagg_real_sentence_sentiments = csv_file_analysis_kaggComp(kagg_news_path)
+'''
 kagg_fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\fake-news-kaggle\\fake.csv'
 
 kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = csv_file_analysis(kagg_fake_news_path)
-
+'''
 
 
 
@@ -150,6 +172,13 @@ plt.title('Article sentiments poli')
 plt.xlabel('Article index')
 plt.ylabel('Average Sentiment Intensity')
 
+plt.figure("Article sentiments kagg")
+plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, '-r*')
+plt.plot(np.arange(1, len(kagg_real_article_sentiments)+1), kagg_real_article_sentiments, '-g*')
+plt.title('Article sentiments kagg')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+
 '''
 # plot of sentiment for each sentence
 plt.figure("Senctence sentiments")
@@ -160,13 +189,13 @@ plt.figure()
 plt.plot(np.arange(1, len(real_flat_list)+1), real_flat_list, '-g')
 plt.xlabel('Sentence index')
 plt.ylabel('Average Sentiment Intensity')
-'''
 
 plt.figure("Article sentiments kagg")
 plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, '-r*')
 plt.title('Article sentiments kagg')
 plt.xlabel('Article index')
 plt.ylabel('Average Sentiment Intensity')
+'''
 
 
 
@@ -203,11 +232,16 @@ print("real article var (poli): " + str(real_art_var_poli))
 
 
 kagg_fake_article_sentiments = np.asarray(kagg_fake_article_sentiments)
+kagg_real_article_sentiments = np.asarray(kagg_real_article_sentiments)
 
 fake_art_avg_kagg = np.mean(kagg_fake_article_sentiments)
 fake_art_var_kagg = np.var(kagg_fake_article_sentiments)
+real_art_avg_kagg = np.mean(kagg_real_article_sentiments)
+real_art_var_kagg = np.var(kagg_real_article_sentiments)
 
 print("fake article avg (kagg): " + str(fake_art_avg_kagg))
 print("fake article var (kagg): " + str(fake_art_var_kagg))
+print("real article avg (kagg): " + str(real_art_avg_kagg))
+print("real article var (kagg): " + str(real_art_var_kagg))
 
 plt.show()
