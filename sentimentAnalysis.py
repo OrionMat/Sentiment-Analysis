@@ -12,8 +12,6 @@ import pandas
 import random
 
 
-
-
 #%%
 # FUNCTIONS
 
@@ -147,8 +145,6 @@ kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = csv_file_analysis(
 '''
 
 
-
-
 #%%
 # mean and varience calculations
 # make function calc_mean and calc_var?
@@ -196,19 +192,8 @@ print("real article avg (kagg): " + str(real_art_avg_kagg))
 print("real article var (kagg): " + str(real_art_var_kagg))
 
 
-
-
-
-
-
-
 #%%
 # plot of sentiment for each article
-plt.hist(buzz_fake_article_sentiments, bins='auto', color='#0504aa', alpha=0.7, rwidth=0.85)
-plt.grid(axis='y', alpha=0.75)
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-plt.title('Hist (buzz fake)')
 
 plt.figure("Article sentiments all")
 plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), buzz_fake_article_sentiments, 'r*')
@@ -259,5 +244,37 @@ plt.title('Article sentiments kagg')
 plt.xlabel('Article index')
 plt.ylabel('Average Sentiment Intensity')
 '''
+
+
+#%%
+# Histogram plots
+bin_num = 'auto' # np.linspace(-4, 4, 50)
+plt.figure("BuzzFeed fact and fake articles")
+plt.hist(buzz_fake_article_sentiments, bins=bin_num, color='r', alpha=0.5, rwidth=0.85, label='Fake')
+plt.hist(buzz_real_article_sentiments, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Frequency')
+plt.legend(loc='upper right')
+plt.title('BuzzFeed fact and fake articles')
+
+plt.figure("PloitiFact fact and fake articles")
+plt.hist(poli_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
+plt.hist(poli_real_article_sentiments, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Frequency')
+plt.legend(loc='upper right')
+plt.title('PloitiFact fact and fake articles')
+
+plt.figure("Kaggel fact and fake articles")
+plt.hist(kagg_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
+plt.hist(kagg_real_article_sentiments, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Frequency')
+plt.legend(loc='upper right')
+plt.title('Kaggel fact and fake articles')
+
 
 plt.show()
