@@ -148,57 +148,6 @@ kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = csv_file_analysis(
 
 
 
-# plot of sentiment for each article
-plt.figure("Article sentiments all")
-plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), buzz_fake_article_sentiments, '-r*')
-plt.plot(np.arange(1, len(buzz_real_article_sentiments)+1), buzz_real_article_sentiments, '-g*')
-plt.plot(np.arange(1, len(poli_fake_article_sentiments)+1), poli_fake_article_sentiments, '-rs')
-plt.plot(np.arange(1, len(poli_real_article_sentiments)+1), poli_real_article_sentiments, '-gs')
-plt.title('Article sentiments both')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
-
-plt.figure("Article sentiments buzz")
-plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), buzz_fake_article_sentiments, '-r*')
-plt.plot(np.arange(1, len(buzz_real_article_sentiments)+1), buzz_real_article_sentiments, '-g*')
-plt.title('Article sentiments buzz')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
-
-plt.figure("Article sentiments poli")
-plt.plot(np.arange(1, len(poli_fake_article_sentiments)+1), poli_fake_article_sentiments, '-r*')
-plt.plot(np.arange(1, len(poli_real_article_sentiments)+1), poli_real_article_sentiments, '-g*')
-plt.title('Article sentiments poli')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
-
-plt.figure("Article sentiments kagg")
-plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, '-r*')
-plt.plot(np.arange(1, len(kagg_real_article_sentiments)+1), kagg_real_article_sentiments, '-g*')
-plt.title('Article sentiments kagg')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
-
-'''
-# plot of sentiment for each sentence
-plt.figure("Senctence sentiments")
-fake_flat_list = [item for sublist in buzz_fake_sentence_sentiments for item in sublist]
-real_flat_list = [item for sublist in buzz_real_sentence_sentiments for item in sublist]
-plt.plot(np.arange(1, len(fake_flat_list)+1), fake_flat_list, '-r')
-plt.figure()
-plt.plot(np.arange(1, len(real_flat_list)+1), real_flat_list, '-g')
-plt.xlabel('Sentence index')
-plt.ylabel('Average Sentiment Intensity')
-
-plt.figure("Article sentiments kagg")
-plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, '-r*')
-plt.title('Article sentiments kagg')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
-'''
-
-
-
 # mean and varience calculations
 # make function calc_mean and calc_var?
 buzz_fake_article_sentiments = np.asarray(buzz_fake_article_sentiments)
@@ -243,5 +192,70 @@ print("fake article avg (kagg): " + str(fake_art_avg_kagg))
 print("fake article var (kagg): " + str(fake_art_var_kagg))
 print("real article avg (kagg): " + str(real_art_avg_kagg))
 print("real article var (kagg): " + str(real_art_var_kagg))
+
+
+
+
+
+
+
+
+
+# plot of sentiment for each article
+plt.hist(buzz_fake_article_sentiments, bins='auto', color='#0504aa', alpha=0.7, rwidth=0.85)
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Value')
+plt.ylabel('Frequency')
+plt.title('Hist (buzz fake)')
+
+plt.figure("Article sentiments all")
+plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), buzz_fake_article_sentiments, 'r*')
+plt.plot(np.arange(1, len(buzz_real_article_sentiments)+1), buzz_real_article_sentiments, 'g*')
+plt.plot(np.arange(1, len(poli_fake_article_sentiments)+1), poli_fake_article_sentiments, 'rs')
+plt.plot(np.arange(1, len(poli_real_article_sentiments)+1), poli_real_article_sentiments, 'gs')
+plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, 'r^')
+plt.plot(np.arange(1, len(kagg_real_article_sentiments)+1), kagg_real_article_sentiments, 'g^')
+plt.title('Article sentiments all')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+
+plt.figure("Article sentiments buzz")
+plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), buzz_fake_article_sentiments, 'r*')
+plt.plot(np.arange(1, len(buzz_real_article_sentiments)+1), buzz_real_article_sentiments, 'g*')
+plt.title('Article sentiments buzz')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+
+plt.figure("Article sentiments poli")
+plt.plot(np.arange(1, len(poli_fake_article_sentiments)+1), poli_fake_article_sentiments, 'rs')
+plt.plot(np.arange(1, len(poli_real_article_sentiments)+1), poli_real_article_sentiments, 'gs')
+plt.title('Article sentiments poli')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+
+plt.figure("Article sentiments kagg")
+plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, 'r^')
+plt.plot(np.arange(1, len(kagg_real_article_sentiments)+1), kagg_real_article_sentiments, 'g^')
+plt.title('Article sentiments kagg')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+
+'''
+# plot of sentiment for each sentence
+plt.figure("Senctence sentiments")
+fake_flat_list = [item for sublist in buzz_fake_sentence_sentiments for item in sublist]
+real_flat_list = [item for sublist in buzz_real_sentence_sentiments for item in sublist]
+plt.plot(np.arange(1, len(fake_flat_list)+1), fake_flat_list, '-r')
+plt.figure()
+plt.plot(np.arange(1, len(real_flat_list)+1), real_flat_list, '-g')
+plt.xlabel('Sentence index')
+plt.ylabel('Average Sentiment Intensity')
+
+plt.figure("Article sentiments kagg")
+plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, '-r*')
+plt.title('Article sentiments kagg')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+'''
 
 plt.show()
