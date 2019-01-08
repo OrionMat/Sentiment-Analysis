@@ -1,3 +1,4 @@
+#%%
 import nltk
 import vaderSentiment
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -13,7 +14,7 @@ import random
 
 
 
-
+#%%
 # FUNCTIONS
 
 # input: text (string) 
@@ -120,6 +121,7 @@ def csv_file_analysis_kaggComp(path):
     return article_sentiment_fake_list, sentence_sentiment_fake_list, article_sentiment_real_list, sentence_sentiment_real_list
 
 
+#%%
 # ANALYSIS
 
 # FakeNewsNet data set
@@ -147,7 +149,7 @@ kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = csv_file_analysis(
 
 
 
-
+#%%
 # mean and varience calculations
 # make function calc_mean and calc_var?
 buzz_fake_article_sentiments = np.asarray(buzz_fake_article_sentiments)
@@ -200,7 +202,7 @@ print("real article var (kagg): " + str(real_art_var_kagg))
 
 
 
-
+#%%
 # plot of sentiment for each article
 plt.hist(buzz_fake_article_sentiments, bins='auto', color='#0504aa', alpha=0.7, rwidth=0.85)
 plt.grid(axis='y', alpha=0.75)
