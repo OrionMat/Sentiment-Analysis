@@ -248,7 +248,9 @@ plt.ylabel('Average Sentiment Intensity')
 
 #%%
 # Histogram plots
+
 bin_num = 'auto' # np.linspace(-4, 4, 50)
+
 plt.figure("BuzzFeed fact and fake articles")
 plt.hist(buzz_fake_article_sentiments, bins=bin_num, color='r', alpha=0.5, rwidth=0.85, label='Fake')
 plt.hist(buzz_real_article_sentiments, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
@@ -257,6 +259,13 @@ plt.xlabel('Sentiment intencity')
 plt.ylabel('Frequency')
 plt.legend(loc='upper right')
 plt.title('BuzzFeed fact and fake articles')
+
+plt.figure("BuzzFeed KDE: Fact vs. Fake")
+df_news = pandas.DataFrame({'Fake': buzz_fake_article_sentiments, 'Real': buzz_real_article_sentiments})
+df_news.plot.kde(title='BuzzFeed KDE')
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Probability')
+
 
 plt.figure("PloitiFact fact and fake articles")
 plt.hist(poli_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
@@ -267,6 +276,14 @@ plt.ylabel('Frequency')
 plt.legend(loc='upper right')
 plt.title('PloitiFact fact and fake articles')
 
+plt.figure("PolitiFact KDE: Fact vs. Fake")
+df_news = pandas.DataFrame({'Fake': poli_fake_article_sentiments, 'Real': poli_real_article_sentiments})
+df_news.plot.kde(title='PolitiFact KDE')
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Probability')
+
+
+
 plt.figure("Kaggel fact and fake articles")
 plt.hist(kagg_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
 plt.hist(kagg_real_article_sentiments, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
@@ -275,6 +292,12 @@ plt.xlabel('Sentiment intencity')
 plt.ylabel('Frequency')
 plt.legend(loc='upper right')
 plt.title('Kaggel fact and fake articles')
+
+plt.figure("Kaggel KDE: Fact vs. Fake")
+df_news = pandas.DataFrame({'Fake': kagg_fake_article_sentiments, 'Real': kagg_real_article_sentiments})
+df_news.plot.kde(title='Kaggel KDE')
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Probability')
 
 
 plt.show()
