@@ -123,10 +123,10 @@ def csv_file_analysis_kaggComp(path):
 # ANALYSIS
 
 # FakeNewsNet data set
-buzz_fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\News_Data\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
-buzz_fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\News_Data\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsContent\\*.json'
-poli_fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\News_Data\\FakeNewsNet-master\\Data\\PolitiFact\\FakeNewsContent\\*.json'
-poli_fact_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\News_Data\\FakeNewsNet-master\\Data\\PolitiFact\\RealNewsContent\\*.json'
+buzz_fake_news_path = 'News_Data\\FakeNewsNet-master\\Data\\BuzzFeed\\FakeNewsContent\\*.json'
+buzz_fact_news_path = 'News_Data\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsContent\\*.json'
+poli_fake_news_path = 'News_Data\\FakeNewsNet-master\\Data\\PolitiFact\\FakeNewsContent\\*.json'
+poli_fact_news_path = 'News_Data\\FakeNewsNet-master\\Data\\PolitiFact\\RealNewsContent\\*.json'
 
 buzz_fake_article_sentiments, buzz_fake_sentence_sentiments = json_file_analysis(buzz_fake_news_path)
 buzz_real_article_sentiments, buzz_real_sentence_sentiments = json_file_analysis(buzz_fact_news_path)
@@ -135,11 +135,11 @@ poli_real_article_sentiments, poli_real_sentence_sentiments = json_file_analysis
 
 
 # Kaggle fake data set
-kagg_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\News_Data\\reliable-nonreliable-news-kaggle\\train.csv'
+kagg_news_path = 'News_Data\\reliable-nonreliable-news-kaggle\\train.csv'
 
 kagg_fake_article_sentiments, kagg_fake_sentence_sentiments, kagg_real_article_sentiments, kagg_real_sentence_sentiments = csv_file_analysis_kaggComp(kagg_news_path)
 '''
-kagg_fake_news_path = 'C:\\Users\\orion\\Documents\\Python programming\\Sentiment Analysis\\News_Data\\fake-news-kaggle\\fake.csv'
+kagg_fake_news_path = 'News_Data\\fake-news-kaggle\\fake.csv'
 
 kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = csv_file_analysis(kagg_fake_news_path)
 '''
