@@ -22,11 +22,9 @@ def calcSentiment(text):
     analyzer = SentimentIntensityAnalyzer()
     sentence_list = nltk.sent_tokenize(text)
     text_sentiment_avg, sentence_sentiment_list =  0.0, [["", ""],["", ""]] # *** potential problems with empty sentence_sentiment_lists
-
     if len(sentence_list) == 0:
         return text_sentiment_avg, sentence_sentiment_list
         #raise ValueError('no sentences in the text given -> 0/0')
-
     sentiment_list = []
     sentence_sentiments_total = 0.0
     for sentence in sentence_list:
@@ -34,10 +32,8 @@ def calcSentiment(text):
             compound_sentiment = round(vs["compound"]*4, 4)
             sentiment_list = sentiment_list + [compound_sentiment]
             sentence_sentiments_total += compound_sentiment
-
     sentence_sentiment_list = list(zip(sentence_list, sentiment_list))
     text_sentiment_avg = sentence_sentiments_total / len(sentence_list)
-
     return text_sentiment_avg, sentence_sentiment_list
 
 def get_json_text(json_file):
@@ -45,8 +41,7 @@ def get_json_text(json_file):
     json_dict = json.loads(json_string)
     return json_dict["text"]
 
-# string split into paragraphs
-def split_paragraphs(article_text):
+def split_toParagraphs(article_text):
     paragraph_list = article_text.split("\n")
     paragraph_list = [paragraph.strip(' ') for paragraph in paragraph_list]
     paragraph_list = list(filter(None, paragraph_list))
@@ -61,52 +56,50 @@ def paragraph_analysis(paragraph_list):
         modified_paragraph_list = modified_paragraph_list + [modified_paragraph]
     return para_sentiments_list, modified_paragraph_list
 
-def json_file_analysis(path):
-    files = glob.glob(path)
-    article_sentiment_tot_list = []
+def article_list_analysis(art_list):
+    article_sentence_list = []
     sentence_sentiment_list = [] 
+    avg_article_sentiment_list = []
+    for article_text in art_list:
+        article_text = str(article_text)
+        #paragraph_list = split_toParagraphs(article_text)
+        #para_sentiments_list, modified_paragraph_list = paragraph_analysis(paragraph_list)  # analysis of paragraph sentiment 
+        article_sentiment, modified_article = calcSentiment(article_text)   # total article sentiment (from all sentences)
+        sentence_list, sentiment_list = zip(*modified_article)
+        article_sentence_list = article_sentence_list + [sentence_list]
+        sentence_sentiment_list = sentence_sentiment_list + [sentiment_list]
+        avg_article_sentiment_list = avg_article_sentiment_list + [article_sentiment]
+    return avg_article_sentiment_list, article_sentence_list, sentence_sentiment_list
+
+def politi_buzz_analysis(path):
+    files = glob.glob(path)
+    article_sentence_list = []
+    sentence_sentiment_list = [] 
+    avg_article_sentiment_list = []
     for file_name in files:
         try:
             with open(file_name, 'r') as json_file:
                 article_text = get_json_text(json_file)
-                paragraph_list = split_paragraphs(article_text)
-                para_sentiments_list, modified_paragraph_list = paragraph_analysis(paragraph_list)  # analysis of paragraph sentiment 
-                article_sentiment_tot, modified_tot = calcSentiment(article_text)   # total article sentiment (from all sentences)
-                     
-                sentence_list, sentiment_list = zip(*modified_tot)
+                #paragraph_list = split_toParagraphs(article_text)
+                #para_sentiments_list, modified_paragraph_list = paragraph_analysis(paragraph_list)  # analysis of paragraph sentiment 
+                article_sentiment, modified_article = calcSentiment(article_text)   # total article sentiment (from all sentences)
+                sentence_list, sentiment_list = zip(*modified_article)
+                article_sentence_list = article_sentence_list + [sentence_list] 
                 sentence_sentiment_list = sentence_sentiment_list + [sentiment_list]
-                article_sentiment_tot_list = article_sentiment_tot_list + [article_sentiment_tot]
-                
+                avg_article_sentiment_list = avg_article_sentiment_list + [article_sentiment]    
         except IOError as exc:
             if exc.errno != errno.EISDIR:
                 raise
+    return avg_article_sentiment_list, article_sentence_list, sentence_sentiment_list
 
-    return article_sentiment_tot_list, sentence_sentiment_list
-
-def article_list_analysis(art_list):
-    article_sentiment_tot_list = []
-    sentence_sentiment_list = [] 
-
-    for article_text in art_list:
-        article_text = str(article_text)
-        paragraph_list = split_paragraphs(article_text)
-        para_sentiments_list, modified_paragraph_list = paragraph_analysis(paragraph_list)  # analysis of paragraph sentiment 
-        article_sentiment_tot, modified_tot = calcSentiment(article_text)   # total article sentiment (from all sentences)
-
-        sentence_list, sentiment_list = zip(*modified_tot)
-        sentence_sentiment_list = sentence_sentiment_list + [sentiment_list]
-        article_sentiment_tot_list = article_sentiment_tot_list + [article_sentiment_tot]
-
-    return article_sentiment_tot_list, sentence_sentiment_list
-
-def csv_file_analysis(path):
+def kaggel_Fake_analysis(path):
     df = pandas.read_csv(path)
     article_list = df['text'].values.tolist()
     art_sub_list = random.sample(article_list, 100)  # needed as 13000 takes too long
-    article_sentiment_tot_list, sentence_sentiment_list = article_list_analysis(art_sub_list)
-    return article_sentiment_tot_list, sentence_sentiment_list
+    article_sentiment_tot_list, sentence_list, sentence_sentiment_list = article_list_analysis(art_sub_list)
+    return article_sentiment_tot_list, sentence_list, sentence_sentiment_list
 
-def csv_file_analysis_kaggComp(path):
+def kaggel_Fact_Fake_analysis(path):
     df = pandas.read_csv(path)
     fake_df = df.loc[df['label'] == 1]
     real_df = df.loc[df['label'] == 0]
@@ -114,9 +107,9 @@ def csv_file_analysis_kaggComp(path):
     article_list_real = real_df['text'].values.tolist()
     article_list_fake = random.sample(article_list_fake, 100)  # needed as 13000 takes too long
     article_list_real = random.sample(article_list_real, 100)  # needed as 13000 takes too long
-    article_sentiment_fake_list, sentence_sentiment_fake_list = article_list_analysis(article_list_fake)
-    article_sentiment_real_list, sentence_sentiment_real_list = article_list_analysis(article_list_real)
-    return article_sentiment_fake_list, sentence_sentiment_fake_list, article_sentiment_real_list, sentence_sentiment_real_list
+    article_sentiment_fake_list, fake_sentence_list, sentence_sentiment_fake_list = article_list_analysis(article_list_fake)
+    article_sentiment_real_list, real_sentence_list, sentence_sentiment_real_list = article_list_analysis(article_list_real)
+    return article_sentiment_fake_list, fake_sentence_list, sentence_sentiment_fake_list, article_sentiment_real_list, real_sentence_list, sentence_sentiment_real_list
 
 
 #%%
@@ -128,20 +121,20 @@ buzz_fact_news_path = 'News_Data\\FakeNewsNet-master\\Data\\BuzzFeed\\RealNewsCo
 poli_fake_news_path = 'News_Data\\FakeNewsNet-master\\Data\\PolitiFact\\FakeNewsContent\\*.json'
 poli_fact_news_path = 'News_Data\\FakeNewsNet-master\\Data\\PolitiFact\\RealNewsContent\\*.json'
 
-buzz_fake_article_sentiments, buzz_fake_sentence_sentiments = json_file_analysis(buzz_fake_news_path)
-buzz_real_article_sentiments, buzz_real_sentence_sentiments = json_file_analysis(buzz_fact_news_path)
-poli_fake_article_sentiments, poli_fake_sentence_sentiments = json_file_analysis(poli_fake_news_path)
-poli_real_article_sentiments, poli_real_sentence_sentiments = json_file_analysis(poli_fact_news_path)
+buzz_fake_article_sentiments, buzz_fake_sentences, buzz_fake_sentence_sentiments = politi_buzz_analysis(buzz_fake_news_path) #avg_article_sentiment_list, sentence_list, sentence_sentiment_list
+buzz_real_article_sentiments, buzz_real_sentences, buzz_real_sentence_sentiments = politi_buzz_analysis(buzz_fact_news_path)
+poli_fake_article_sentiments, poli_fake_sentences, poli_fake_sentence_sentiments = politi_buzz_analysis(poli_fake_news_path)
+poli_real_article_sentiments, poli_real_sentences, poli_real_sentence_sentiments = politi_buzz_analysis(poli_fact_news_path)
 
 
 # Kaggle fake data set
 kagg_news_path = 'News_Data\\reliable-nonreliable-news-kaggle\\train.csv'
 
-kagg_fake_article_sentiments, kagg_fake_sentence_sentiments, kagg_real_article_sentiments, kagg_real_sentence_sentiments = csv_file_analysis_kaggComp(kagg_news_path)
+kagg_fake_article_sentiments, kagg_fake_sentences, kagg_fake_sentence_sentiments, kagg_real_article_sentiments, kagg_real_sentences, kagg_real_sentence_sentiments = kaggel_Fact_Fake_analysis(kagg_news_path)
 '''
 kagg_fake_news_path = 'News_Data\\fake-news-kaggle\\fake.csv'
 
-kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = csv_file_analysis(kagg_fake_news_path)
+kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = kaggel_Fake_analysis(kagg_fake_news_path)
 '''
 
 
