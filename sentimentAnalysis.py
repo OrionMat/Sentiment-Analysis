@@ -17,28 +17,28 @@ import random
 
 # input: text (string) 
 # output: average sentiment of the text and a list containing a tuple of each sentence with its corresponding sentiment
-# sentiment is rating between -4 (VERY negative) and 4 (VERY positive)
+# sentiment is rating between -4 (EXTREAMLY negative) and 4 (EXTREAMLY positive)
 def calcSentiment(text):
     analyzer = SentimentIntensityAnalyzer()
     sentence_list = nltk.sent_tokenize(text)
-    text_sentiment_avg, sentiment_paragraph_list =  0.0, [["", ""],["", ""]] # *** potential problems with empty sentiment_paragraph_lists
+    text_sentiment_avg, sentence_sentiment_list =  0.0, [["", ""],["", ""]] # *** potential problems with empty sentence_sentiment_lists
 
     if len(sentence_list) == 0:
-        return text_sentiment_avg, sentiment_paragraph_list
+        return text_sentiment_avg, sentence_sentiment_list
         #raise ValueError('no sentences in the text given -> 0/0')
 
     sentiment_list = []
-    sentence_sentiments = 0.0
+    sentence_sentiments_total = 0.0
     for sentence in sentence_list:
             vs = analyzer.polarity_scores(sentence)
             compound_sentiment = round(vs["compound"]*4, 4)
             sentiment_list = sentiment_list + [compound_sentiment]
-            sentence_sentiments += compound_sentiment
+            sentence_sentiments_total += compound_sentiment
 
-    sentiment_paragraph_list = list(zip(sentence_list, sentiment_list))
-    text_sentiment_avg = sentence_sentiments / len(sentence_list)
+    sentence_sentiment_list = list(zip(sentence_list, sentiment_list))
+    text_sentiment_avg = sentence_sentiments_total / len(sentence_list)
 
-    return text_sentiment_avg, sentiment_paragraph_list
+    return text_sentiment_avg, sentence_sentiment_list
 
 def get_json_text(json_file):
     json_string = json_file.read()
@@ -252,7 +252,7 @@ plt.ylabel('Average Sentiment Intensity')
 bin_num = 'auto' # np.linspace(-4, 4, 50)
 
 plt.figure("BuzzFeed fact and fake articles")
-plt.hist(buzz_fake_article_sentiments, bins=bin_num, color='r', alpha=0.5, rwidth=0.85, label='Fake')
+plt.hist(buzz_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
 plt.hist(buzz_real_article_sentiments, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
 plt.grid(axis='y', alpha=0.75)
 plt.xlabel('Sentiment intencity')
