@@ -73,24 +73,16 @@ def article_list_analysis(art_list):
 
 def politi_buzz_analysis(path):
     files = glob.glob(path)
-    article_sentence_list = []
-    sentence_sentiment_list = [] 
-    avg_article_sentiment_list = []
+    article_list = []
     for file_name in files:
         try:
             with open(file_name, 'r') as json_file:
                 article_text = get_json_text(json_file)
-                #paragraph_list = split_toParagraphs(article_text)
-                #para_sentiments_list, modified_paragraph_list = paragraph_analysis(paragraph_list)  # analysis of paragraph sentiment 
-                article_sentiment, modified_article = calcSentiment(article_text)   # total article sentiment (from all sentences)
-                sentence_list, sentiment_list = zip(*modified_article)
-                article_sentence_list = article_sentence_list + [sentence_list] 
-                sentence_sentiment_list = sentence_sentiment_list + [sentiment_list]
-                avg_article_sentiment_list = avg_article_sentiment_list + [article_sentiment]    
+                article_list = article_list + [article_text]   
         except IOError as exc:
             if exc.errno != errno.EISDIR:
                 raise
-    return avg_article_sentiment_list, article_sentence_list, sentence_sentiment_list
+    return article_list_analysis(article_list)
 
 def kaggel_Fake_analysis(path):
     df = pandas.read_csv(path)
