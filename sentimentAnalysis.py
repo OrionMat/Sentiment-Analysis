@@ -97,6 +97,14 @@ def kaggel_Fact_Fake_analysis(path):
     article_sentiment_real_list, real_sentence_list, sentence_sentiment_real_list = article_list_analysis(article_list_real)
     return article_sentiment_fake_list, fake_sentence_list, sentence_sentiment_fake_list, article_sentiment_real_list, real_sentence_list, sentence_sentiment_real_list
 
+def avg_var_calculation(sentiment_list, factOrFake, news_source):
+    sentiment_array = np.asarray(sentiment_list)
+    sentiment_avg = np.mean(sentiment_array)
+    sentiment_var = np.var(sentiment_array)
+    print(factOrFake + " article avg " + news_source + ": " + str(sentiment_avg))
+    print(factOrFake + " article var " + news_source + ": " + str(sentiment_var))
+    return sentiment_array, sentiment_avg, sentiment_var
+
 #def kaggel_Fake_analysis(path):
 #    df = pandas.read_csv(path)
 #    article_list = df['text'].values.tolist()
@@ -131,51 +139,20 @@ kagg_fake_article_sentiments, kagg_fake_sentences, kagg_fake_sentence_sentiments
 #kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = kaggel_Fake_analysis(kagg_fake_news_path)
 
 
+
+
+
 #%%
 # mean and varience calculations
-# make function calc_mean and calc_var?
-buzz_fake_article_sentiments = np.asarray(buzz_fake_article_sentiments)
-buzz_real_article_sentiments = np.asarray(buzz_real_article_sentiments)
-
-fake_art_avg_buzz = np.mean(buzz_fake_article_sentiments)
-fake_art_var_buzz = np.var(buzz_fake_article_sentiments)
-real_art_avg_buzz = np.mean(buzz_real_article_sentiments)
-real_art_var_buzz = np.var(buzz_real_article_sentiments)
-
-print("fake article avg (buzz): " + str(fake_art_avg_buzz))
-print("fake article var (buzz): " + str(fake_art_var_buzz))
-print("real article avg (buzz): " + str(real_art_avg_buzz))
-print("real article var (buzz): " + str(real_art_var_buzz))
+buzz_fake_article_sentiments, fake_art_avg_buzz, fake_art_var_buzz = avg_var_calculation(buzz_fake_article_sentiments, "fake", "(buzz)")
+buzz_real_article_sentiments, real_art_avg_buzz, real_art_var_buzz = avg_var_calculation(buzz_real_article_sentiments, "real", "(buzz)")
+poli_fake_article_sentiments, fake_art_avg_poli, fake_art_var_poli = avg_var_calculation(poli_fake_article_sentiments, "fake", "(poli)")
+poli_real_article_sentiments, real_art_avg_poli, real_art_var_poli = avg_var_calculation(poli_real_article_sentiments, "real", "(poli)")
+kagg_fake_article_sentiments, fake_art_avg_kagg, fake_art_var_kagg = avg_var_calculation(kagg_fake_article_sentiments, "fake", "(kagg)")
+kagg_real_article_sentiments, real_art_avg_kagg, real_art_var_kagg = avg_var_calculation(kagg_real_article_sentiments, "real", "(kagg)")
 
 
 
-poli_fake_article_sentiments = np.asarray(poli_fake_article_sentiments)
-poli_real_article_sentiments = np.asarray(poli_real_article_sentiments)
-
-fake_art_avg_poli = np.mean(poli_fake_article_sentiments)
-fake_art_var_poli = np.var(poli_fake_article_sentiments)
-real_art_avg_poli = np.mean(poli_real_article_sentiments)
-real_art_var_poli = np.var(poli_real_article_sentiments)
-
-print("fake article avg (poli): " + str(fake_art_avg_poli))
-print("fake article var (poli): " + str(fake_art_var_poli))
-print("real article avg (poli): " + str(real_art_avg_poli))
-print("real article var (poli): " + str(real_art_var_poli))
-
-
-
-kagg_fake_article_sentiments = np.asarray(kagg_fake_article_sentiments)
-kagg_real_article_sentiments = np.asarray(kagg_real_article_sentiments)
-
-fake_art_avg_kagg = np.mean(kagg_fake_article_sentiments)
-fake_art_var_kagg = np.var(kagg_fake_article_sentiments)
-real_art_avg_kagg = np.mean(kagg_real_article_sentiments)
-real_art_var_kagg = np.var(kagg_real_article_sentiments)
-
-print("fake article avg (kagg): " + str(fake_art_avg_kagg))
-print("fake article var (kagg): " + str(fake_art_var_kagg))
-print("real article avg (kagg): " + str(real_art_avg_kagg))
-print("real article var (kagg): " + str(real_art_var_kagg))
 
 
 #%%
