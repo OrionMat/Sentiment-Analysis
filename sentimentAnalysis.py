@@ -126,7 +126,6 @@ buzz_real_sentences, buzz_real_sentence_sentiments, buzz_real_article_sentiments
 poli_fake_sentences, poli_fake_sentence_sentiments, poli_fake_article_sentiments = politi_buzz_analysis(poli_fake_news_path)
 poli_real_sentences, poli_real_sentence_sentiments, poli_real_article_sentiments = politi_buzz_analysis(poli_fact_news_path)
 
-
 # Kaggle real and fake data set
 kagg_news_path = 'News_Data\\reliable-nonreliable-news-kaggle\\train.csv'
 kagg_fake_article_sentiments, kagg_fake_sentences, kagg_fake_sentence_sentiments, kagg_real_article_sentiments, kagg_real_sentences, kagg_real_sentence_sentiments = kaggel_Fact_Fake_analysis(kagg_news_path)
@@ -135,7 +134,12 @@ kagg_fake_article_sentiments, kagg_fake_sentences, kagg_fake_sentence_sentiments
 #kagg_fake_news_path = 'News_Data\\fake-news-kaggle\\fake.csv'
 #kagg_fake_article_sentiments, kagg_fake_sentence_sentiments = kaggel_Fake_analysis(kagg_fake_news_path)
 
-
+buzz_fake_flat_list = [item for sublist in buzz_fake_sentence_sentiments for item in sublist]
+buzz_real_flat_list = [item for sublist in buzz_real_sentence_sentiments for item in sublist]
+poli_fake_flat_list = [item for sublist in poli_fake_sentence_sentiments for item in sublist]
+poli_real_flat_list = [item for sublist in poli_real_sentence_sentiments for item in sublist]
+kagg_fake_flat_list = [item for sublist in kagg_fake_sentence_sentiments for item in sublist]
+kagg_real_flat_list = [item for sublist in kagg_real_sentence_sentiments for item in sublist]
 
 
 
@@ -151,27 +155,8 @@ kagg_real_article_sentiments, real_art_avg_kagg, real_art_var_kagg = avg_var_cal
 
 
 
-
 #%%
 # PLOTS
-
-# scatter plots: (sentence sentiments)
-plt.figure("Senctence sentiments") # plot of sentiment for each sentence
-#print(buzz_fake_sentence_sentiments)
-buzz_fake_flat_list = [item for sublist in buzz_fake_sentence_sentiments for item in sublist]
-buzz_real_flat_list = [item for sublist in buzz_real_sentence_sentiments for item in sublist]
-plt.plot(np.arange(1, len(buzz_fake_flat_list)+1), buzz_fake_flat_list, '-r')
-
-plt.figure()
-plt.plot(np.arange(1, len(buzz_real_flat_list)+1), buzz_real_flat_list, '-g')
-plt.xlabel('Sentence index')
-plt.ylabel('Average Sentiment Intensity')
-
-plt.figure("Article sentiments kagg")
-plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), kagg_fake_article_sentiments, '-r*')
-plt.title('Article sentiments kagg')
-plt.xlabel('Article index')
-plt.ylabel('Average Sentiment Intensity')
 
 # scatter plots: (of article average sentiments)
 plt.figure("BuzzFeed article sentiments")
@@ -220,9 +205,9 @@ plt.ylabel('Frequency')
 plt.legend(loc='upper right')
 plt.title('BuzzFeed fact and fake articles')
 
-#plt.figure("BuzzFeed KDE: Fact vs. Fake")
+#plt.figure("BuzzFeed KDE: Fact vs. Fake (articles)")
 df_news = pandas.DataFrame({'Fake': buzz_fake_article_sentiments, 'Real': buzz_real_article_sentiments})
-df_news.plot.kde(title='BuzzFeed KDE')
+df_news.plot.kde(title='BuzzFeed KDE (articles)')
 plt.xlabel('Sentiment intencity')
 plt.ylabel('Probability')
 
@@ -239,7 +224,7 @@ plt.title('PloitiFact fact and fake articles')
 df_news_real = pandas.DataFrame({'Real': poli_real_article_sentiments})
 df_news_fake = pandas.DataFrame({'Fake': poli_fake_article_sentiments})
 df_news = pandas.concat([df_news_real,df_news_fake], axis=1)
-df_news.plot.kde(title='PolitiFact KDE')
+df_news.plot.kde(title='PolitiFact KDE (articles)')
 plt.xlabel('Sentiment intencity')
 plt.ylabel('Probability')
 
@@ -256,9 +241,63 @@ plt.title('Kaggel fact and fake articles')
 df_news_real = pandas.DataFrame({'Real': kagg_real_article_sentiments})
 df_news_fake = pandas.DataFrame({'Fake': kagg_fake_article_sentiments})
 df_news = pandas.concat([df_news_real,df_news_fake], axis=1)
-df_news.plot.kde(title='Kaggel KDE')
+df_news.plot.kde(title='Kaggel KDE (articles)')
 plt.xlabel('Sentiment intencity')
 plt.ylabel('Probability')
 
+#%%
+
+# histogram plots: (of sentence sentiments)
+
+plt.figure("BuzzFeed senctence sentiments") # plot of sentiment for each sentence
+plt.hist(buzz_fake_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
+plt.hist(buzz_real_flat_list, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Frequency')
+plt.legend(loc='upper right')
+plt.title('BuzzFeed senctence sentiments')
+
+#plt.figure("BuzzFeed KDE: Fact vs. Fake (sentences)")
+df_news_real = pandas.DataFrame({'Real': buzz_real_flat_list})
+df_news_fake = pandas.DataFrame({'Fake': buzz_fake_flat_list})
+df_news = pandas.concat([df_news_real,df_news_fake], axis=1)
+df_news.plot.kde(title='BuzzFeed KDE (sentences)')
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Probability')
+
+plt.figure("PolitiFact senctence sentiments") # plot of sentiment for each sentence
+plt.hist(poli_fake_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
+plt.hist(poli_real_flat_list, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Frequency')
+plt.legend(loc='upper right')
+plt.title('PolitiFact senctence sentiments')
+
+#plt.figure("PolitiFact KDE: Fact vs. Fake (sentences)")
+df_news_real = pandas.DataFrame({'Real': poli_real_flat_list})
+df_news_fake = pandas.DataFrame({'Fake': poli_fake_flat_list})
+df_news = pandas.concat([df_news_real,df_news_fake], axis=1)
+df_news.plot.kde(title='PolitiFact KDE (sentences)')
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Probability')
+
+plt.figure("Kaggel senctence sentiments") # plot of sentiment for each sentence
+plt.hist(kagg_fake_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
+plt.hist(kagg_real_flat_list, bins=bin_num, color='b', alpha=0.7, rwidth=0.85, label='Real')
+plt.grid(axis='y', alpha=0.75)
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Frequency')
+plt.legend(loc='upper right')
+plt.title('Kaggel senctence sentiments')
+
+#plt.figure("Kaggel KDE: Fact vs. Fake (sentences)")
+df_news_real = pandas.DataFrame({'Real': kagg_real_flat_list})
+df_news_fake = pandas.DataFrame({'Fake': kagg_fake_flat_list})
+df_news = pandas.concat([df_news_real,df_news_fake], axis=1)
+df_news.plot.kde(title='Kaggel KDE (sentences)')
+plt.xlabel('Sentiment intencity')
+plt.ylabel('Probability')
 
 plt.show()
