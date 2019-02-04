@@ -16,6 +16,8 @@ CNN_sentence_list, CNN_sentence_sentiments, CNN_article_sentiments = NSA.kaggle_
 BB_sentence_list, BB_sentence_sentiments, BB_article_sentiments = NSA.kaggle_mult_news_analysis(data1_path, 'Breitbart')
 GUA_sentence_list1, GUA_sentence_sentiments1, GUA_article_sentiments1 = NSA.kaggle_mult_news_analysis(data2_path, 'Guardian')
 GUA_sentence_list2, GUA_sentence_sentiments2, GUA_article_sentiments2 = NSA.kaggle_mult_news_analysis(data3_path, 'Guardian')
+buzz_sentence_list, buzz_sentence_sentiments, buzz_article_sentiments = NSA.kaggle_mult_news_analysis(data2_path, 'Buzzfeed News')
+
 
 GUA_sentence_list = GUA_sentence_list1 + GUA_sentence_list2
 GUA_sentence_sentiments = GUA_sentence_sentiments1 + GUA_sentence_sentiments2
@@ -27,6 +29,7 @@ fox_flat_list = [item for sublist in fox_sentence_sentiments for item in sublist
 CNN_flat_list = [item for sublist in CNN_sentence_sentiments for item in sublist]
 BB_flat_list = [item for sublist in BB_sentence_sentiments for item in sublist]
 GUA_flat_list = [item for sublist in GUA_sentence_sentiments for item in sublist]
+buzz_flat_list = [item for sublist in buzz_sentence_sentiments for item in sublist]
 
 NYT_art_abs = NSA.cal_article_abs_sentiment(NYT_sentence_sentiments)
 reuters_art_abs = NSA.cal_article_abs_sentiment(reuters_sentence_sentiments)
@@ -34,6 +37,7 @@ fox_art_abs = NSA.cal_article_abs_sentiment(fox_sentence_sentiments)
 CNN_art_abs = NSA.cal_article_abs_sentiment(CNN_sentence_sentiments)
 BB_art_abs = NSA.cal_article_abs_sentiment(BB_sentence_sentiments)
 GUA_art_abs = NSA.cal_article_abs_sentiment(GUA_sentence_sentiments)
+buzz_art_abs = NSA.cal_article_abs_sentiment(buzz_sentence_sentiments)
 
 # mean and varience calculations
 # sentiment lists to arrays
@@ -43,6 +47,8 @@ fox_article_sentiments, art_avg_fox, art_var_fox = NSA.avg_var_calculation(fox_a
 CNN_article_sentiments, art_avg_CNN, art_var_CNN = NSA.avg_var_calculation(CNN_article_sentiments, "", "(CNN)")
 BB_article_sentiments, art_avg_BB, art_var_BB = NSA.avg_var_calculation(BB_article_sentiments, "", "(BB)")
 GUA_article_sentiments, art_avg_GUA, art_var_GUA = NSA.avg_var_calculation(GUA_article_sentiments, "", "(GUA)")
+buzz_article_sentiments, art_avg_buzz, art_var_buzz = NSA.avg_var_calculation(buzz_article_sentiments, "", "(buzz)")
+
 
 #all_article_sentiments = np.concatenate((NYT_article_sentiments, poli_article_sentiments, kagg_article_sentiments), axis=None) # move this and do more with it
 #all_sentence_sentiments = np.concatenate((NYT_flat_list, poli_flat_list, kagg_flat_list), axis=None)
@@ -67,6 +73,9 @@ df_news_BB_article_abs = pandas.DataFrame({'Breitbart': BB_art_abs})
 df_news_GUA_article_avg = pandas.DataFrame({'Guardian': GUA_article_sentiments})
 df_news_GUA_article_abs = pandas.DataFrame({'Guardian': GUA_art_abs})
 
+df_news_buzz_article_avg = pandas.DataFrame({'BuzzFeed': buzz_article_sentiments})
+df_news_buzz_article_abs = pandas.DataFrame({'BuzzFeed': buzz_art_abs})
+
 # All
 #df_news_all_articles = pandas.concat([df_news_fake,df_news], axis=1)
 
@@ -90,6 +99,9 @@ df_news_BB_sentence_abs = pandas.DataFrame({'Breitbart': np.absolute(np.asarray(
 df_news_GUA_sentence_avg = pandas.DataFrame({'Guardian': GUA_flat_list})
 df_news_GUA_sentence_abs = pandas.DataFrame({'Guardian': np.absolute(np.asarray(GUA_flat_list))})
 
+df_news_buzz_sentence_avg = pandas.DataFrame({'BuzzFeed': buzz_flat_list})
+df_news_buzz_sentence_abs = pandas.DataFrame({'BuzzFeed': np.absolute(np.asarray(buzz_flat_list))})
+
 #df_news_ALL_sentence = pandas.concat([df_news_fake,df_news], axis=1)
 
 bin_num = 'auto' # np.linspace(-4, 4, 50)
@@ -109,6 +121,7 @@ plt.plot(np.arange(1, len(fox_article_sentiments)+1), fox_article_sentiments, 'm
 plt.plot(np.arange(1, len(CNN_article_sentiments)+1), CNN_article_sentiments, 'y+', label='CNN')
 plt.plot(np.arange(1, len(BB_article_sentiments)+1), BB_article_sentiments, 'r+', label='Breitbart')
 plt.plot(np.arange(1, len(GUA_article_sentiments)+1), GUA_article_sentiments, 'c+', label='Guardian')
+plt.plot(np.arange(1, len(buzz_article_sentiments)+1), buzz_article_sentiments, 'k+', label='BuzzFeed')
 plt.axis([0, 101, -4, 4])
 plt.legend(loc='upper right')
 plt.title('New article sentiments')
@@ -146,6 +159,7 @@ plt.hist(fox_article_sentiments, bins=bin_num, color='m', alpha=0.7, rwidth=0.85
 plt.hist(CNN_article_sentiments, bins=bin_num, color='y', alpha=0.7, rwidth=0.85, label='CNN')
 plt.hist(BB_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Breitbart')
 plt.hist(GUA_article_sentiments, bins=bin_num, color='c', alpha=0.7, rwidth=0.85, label='Guardian')
+plt.hist(buzz_article_sentiments, bins=bin_num, color='k', alpha=0.7, rwidth=0.85, label='BuzzFeed')
 plt.grid(axis='y', alpha=0.75)
 plt.axis([-4, 4, 0, 50])
 plt.xlabel('Sentiment intensity')
@@ -192,6 +206,7 @@ df_news_fox_article_avg.plot.kde(ax=axes[0,0], color='m')
 df_news_CNN_article_avg.plot.kde(ax=axes[0,0], color='y')
 df_news_BB_article_avg.plot.kde(ax=axes[0,0], color='r')
 df_news_GUA_article_avg.plot.kde(ax=axes[0,0], color='c')
+df_news_buzz_article_avg.plot.kde(ax=axes[0,0], color='k')
 #df_news_poli_article.plot.kde(title='PolitiFact KDE (articles)', ax=axes[0,1], color='b')
 #df_news_kagg_article.plot.kde(title='Kaggel KDE (articles)', ax=axes[1,0], color='b')
 #df_news_all_articles.plot.kde(title='All KDE (articles)', ax=axes[1,1], color='b')
@@ -216,6 +231,7 @@ df_news_fox_article_abs.plot.kde(ax=axes[0,0], color='m')
 df_news_CNN_article_abs.plot.kde(ax=axes[0,0], color='y')
 df_news_BB_article_abs.plot.kde(ax=axes[0,0], color='r')
 df_news_GUA_article_abs.plot.kde(ax=axes[0,0], color='c')
+df_news_buzz_article_abs.plot.kde(ax=axes[0,0], color='k')
 #df_news_poli_article.plot.kde(title='PolitiFact KDE (articles)', ax=axes[0,1], color='b')
 #df_news_kagg_article.plot.kde(title='Kaggel KDE (articles)', ax=axes[1,0], color='b')
 #df_news_all_articles.plot.kde(title='All KDE (articles)', ax=axes[1,1], color='b')
@@ -232,7 +248,8 @@ plt.plot(np.arange(1, len(fox_flat_list)+1), fox_flat_list, 'm+', label='Fox')
 plt.plot(np.arange(1, len(CNN_flat_list)+1), CNN_flat_list, 'y+', label='CNN')
 plt.plot(np.arange(1, len(BB_flat_list)+1), BB_flat_list, 'r+', label='Breitbart')
 plt.plot(np.arange(1, len(GUA_flat_list)+1), GUA_flat_list, 'c+', label='Guardian')
-plt.axis([0, 7000, -4, 4])
+plt.plot(np.arange(1, len(buzz_flat_list)+1), buzz_flat_list, 'k+', label='BuzzFeed')
+plt.axis([0, 10000, -4, 4])
 plt.legend(loc='upper right')
 plt.title('Sentence sentiments')
 plt.xlabel('Sentence index')
@@ -270,8 +287,9 @@ plt.hist(fox_flat_list, bins=bin_num, color='m', alpha=0.7, rwidth=0.85, label='
 plt.hist(CNN_flat_list, bins=bin_num, color='y', alpha=0.7, rwidth=0.85, label='CNN')
 plt.hist(BB_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Breitbart')
 plt.hist(GUA_flat_list, bins=bin_num, color='c', alpha=0.7, rwidth=0.85, label='Guardian')
+plt.hist(buzz_flat_list, bins=bin_num, color='k', alpha=0.7, rwidth=0.85, label='BuzzFeed')
 plt.grid(axis='y', alpha=0.75)
-plt.axis([-4, 4, 0, 3000])
+plt.axis([-4, 4, 0, 5000])
 plt.xlabel('Sentiment intensity')
 plt.ylabel('Frequency')
 plt.legend(loc='upper right')
@@ -315,6 +333,7 @@ df_news_fox_sentence_avg.plot.kde(ax=axes[0,0], color='m')
 df_news_CNN_sentence_avg.plot.kde(ax=axes[0,0], color='y')
 df_news_BB_sentence_avg.plot.kde(ax=axes[0,0], color='r')
 df_news_GUA_sentence_avg.plot.kde(ax=axes[0,0], color='c')
+df_news_buzz_sentence_avg.plot.kde(ax=axes[0,0], color='k')
 #df_news_poli_sentence.plot.kde(title='PolitiFact KDE (sentences)', ax=axes[0,1], color='b')
 #df_news_kagg_sentence.plot.kde(title='Kaggel KDE (sentences)', ax=axes[1,0], color='b')
 #df_news_all_sentence.plot.kde(title='All KDE (sentences)', ax=axes[1,1], color='b')
@@ -339,6 +358,7 @@ df_news_fox_sentence_abs.plot.kde(ax=axes[0,0], color='m')
 df_news_CNN_sentence_abs.plot.kde(ax=axes[0,0], color='y')
 df_news_BB_sentence_abs.plot.kde(ax=axes[0,0], color='r')
 df_news_GUA_sentence_abs.plot.kde(ax=axes[0,0], color='c')
+df_news_buzz_sentence_abs.plot.kde(ax=axes[0,0], color='k')
 #df_news_poli_sentence.plot.kde(title='PolitiFact KDE (sentences)', ax=axes[0,1], color='b')
 #df_news_kagg_sentence.plot.kde(title='Kaggel KDE (sentences)', ax=axes[1,0], color='b')
 #df_news_all_sentence.plot.kde(title='All KDE (sentences)', ax=axes[1,1], color='b')
