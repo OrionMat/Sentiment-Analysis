@@ -122,15 +122,10 @@ def cal_article_abs_sentiment(list_list):
 
 def kaggle_mult_news_analysis(path, publication):
     df = pandas.read_csv(path)
-
     df_publication = df.loc[df['publication'] == publication]
-
     article_list = df_publication['content'].values.tolist()
-
     article_list = random.sample(article_list, 100)  # needed as otherwise it takes too long
-
     sentence_list, sentence_sentiments, article_sentiments = article_list_analysis(article_list)
-
     return sentence_list, sentence_sentiments, article_sentiments
 
 #def kaggel_Fake_analysis(path):
