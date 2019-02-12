@@ -118,7 +118,7 @@ def avg_var_calculation(sentiment_list, factOrFake, news_source):
 def cal_article_abs_sentiment(list_list):
     mean_list = []
     for list in list_list:
-        mean = np.mean( np.absolute( np.asarray(list)))
+        mean = np.mean(np.absolute(np.asarray(list)))
         mean_list = mean_list + [mean]
     return np.asarray(mean_list)
 
@@ -183,3 +183,8 @@ def nyt_scrape(url):
 
 
     return article_list
+
+def nyt_scrape_analysis(url):
+    article_list = nyt_scrape(url)
+    sentence_list, sentence_sentiments, article_sentiments = article_list_analysis(article_list)
+    return sentence_list, sentence_sentiments, article_sentiments
