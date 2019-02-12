@@ -4,6 +4,7 @@ import newsSentimentAnalysis as NSA
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas
+from scipy import stats
 
 #%%
 # ANALYSIS
@@ -69,6 +70,16 @@ all_fake_article_sentiments = np.concatenate((buzz_fake_article_sentiments, poli
 all_real_article_sentiments = np.concatenate((buzz_real_article_sentiments, poli_real_article_sentiments, kagg_real_article_sentiments), axis=None)
 all_fake_sentence_sentiments = np.concatenate((buzz_fake_flat_list, poli_fake_flat_list, kagg_fake_flat_list), axis=None)
 all_real_sentence_sentiments = np.concatenate((buzz_real_flat_list, poli_real_flat_list, kagg_real_flat_list), axis=None)
+
+buzz_fake_art_abs = NSA.cal_article_abs_sentiment(buzz_fake_sentence_sentiments)
+buzz_real_art_abs = NSA.cal_article_abs_sentiment(buzz_real_sentence_sentiments)
+
+KS_buzz_art = stats.ks_2samp(buzz_fake_art_abs, buzz_real_art_abs)
+KS_buzz_sent = stats.ks_2samp(buzz_fake_flat_list, buzz_real_flat_list)
+
+print('\n buzz article abs K-S test:', KS_buzz_art, '\n')
+print('\n buzz sentence K-S test:', KS_buzz_sent, '\n')
+
 
 # Article dataframes:
 # BuzzFeed
@@ -193,7 +204,7 @@ plt.title('BuzzFeed fact and fake articles')
 # BuzzFeed KDE
 df_news_buzz_article.plot.kde(title='BuzzFeed KDE (articles)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 # PolitiFact hist
 plt.figure("PloitiFact fact and fake articles")
 plt.hist(poli_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
@@ -206,7 +217,7 @@ plt.title('PloitiFact fact and fake articles')
 # PolitiFact KDE
 df_news_poli_article.plot.kde(title='PolitiFact KDE (articles)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 # Kaggel hist
 plt.figure("Kaggel fact and fake articles")
 plt.hist(kagg_fake_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
@@ -219,7 +230,7 @@ plt.title('Kaggel fact and fake articles')
 # Kaggel KDE
 df_news_kagg_article.plot.kde(title='Kaggel KDE (articles)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 # BBC hist
 plt.figure("BBC articles")
 plt.hist(BBC_busin_article_sentiments, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Business')
@@ -235,7 +246,7 @@ plt.title('BBC article sentiment histogram')
 # BBC KDE
 df_news_BBC_article.plot.kde(title='BBC articles kernel density estimation (KDE)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 
 
 #%% Sentences:
@@ -253,7 +264,7 @@ plt.title('BuzzFeed senctence sentiments')
 # BuzzFeed KDE
 df_news_buzz_sentence.plot.kde(title='BuzzFeed KDE (sentences)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 # PolitiFact hist
 plt.figure("PolitiFact senctence sentiments")
 plt.hist(poli_fake_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
@@ -266,7 +277,7 @@ plt.title('PolitiFact senctence sentiments')
 # PloitiFact KDE
 df_news_poli_sentence.plot.kde(title='PolitiFact KDE (sentences)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 # Kaggel hist
 plt.figure("Kaggel senctence sentiments")
 plt.hist(kagg_fake_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Fake')
@@ -279,7 +290,7 @@ plt.title('Kaggel senctence sentiments')
 # Kaggel KDE
 df_news_kagg_sentence.plot.kde(title='Kaggel KDE (sentences)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 # BBC hist
 plt.figure("BBC senctence sentiments")
 plt.hist(BBC_busin_flat_list, bins=bin_num, color='r', alpha=0.7, rwidth=0.85, label='Business')
@@ -295,7 +306,7 @@ plt.title('BBC senctence sentiments')
 # BBC KDE
 df_news_BBC_sentence.plot.kde(title='BBC KDE (sentences)')
 plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
+plt.ylabel('Density')
 
 
 
@@ -490,32 +501,23 @@ df_news_poli_sentence.plot.kde(title='PolitiFact KDE (sentences)', ax=axes[0,1],
 df_news_kagg_sentence.plot.kde(title='Kaggel KDE (sentences)', ax=axes[1,0], color='rb')
 df_news_all_sentence.plot.kde(title='All KDE (sentences)', ax=axes[1,1], color='rb')
 
-# Absolute sentiment
-#%% 
+# Absolute sentiment:
 
-buzz_fake_art_abs = NSA.cal_article_abs_sentiment(buzz_fake_sentence_sentiments)
-buzz_real_art_abs = NSA.cal_article_abs_sentiment(buzz_real_sentence_sentiments)
+#%% Articles
 
-
-
-plt.figure("BuzzFeed absolute article sentiments")
+plt.figure("BuzzFeed article sentiments")
 plt.plot(np.arange(1, len(buzz_fake_art_abs)+1), buzz_fake_art_abs, 'r*', label='Fake')
 plt.plot(np.arange(1, len(buzz_real_art_abs)+1), buzz_real_art_abs, 'g*', label='Fact')
 plt.axis([0, 100, -4, 4])
 plt.legend(loc='upper right')
-plt.title('BuzzFeed article sentiments')
+plt.title('BuzzFeed absolute article sentiments')
 plt.xlabel('Article index')
 plt.ylabel('Average Sentiment Intensity')
 
-df_news_buzz_article = pandas.DataFrame({'Fake': buzz_fake_article_sentiments, 'Fact': buzz_real_article_sentiments})
-df_news_buzz_article.plot.kde(title='BuzzFeed KDE (articles)')
-plt.xlabel('Sentiment intensity')
-plt.ylabel('Probability')
-
 df_news_buzz_article = pandas.DataFrame({'Fake': buzz_fake_art_abs, 'Fact': buzz_real_art_abs})
 df_news_buzz_article.plot.kde(title='BuzzFeed absolute KDE (articles)')
-plt.xlabel(' Absolute sentiment intensity')
-plt.ylabel('Probability')
+plt.xlabel('Article absolute sentiment intensity')
+plt.ylabel('Density')
 
 df_news_real = pandas.DataFrame({'Fact': np.absolute(np.asarray(buzz_real_flat_list))})
 df_news_fake = pandas.DataFrame({'Fake': np.absolute(np.asarray(buzz_fake_flat_list))})
