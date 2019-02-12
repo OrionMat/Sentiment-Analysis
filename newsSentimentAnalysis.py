@@ -95,7 +95,7 @@ def BBC_analysis(path):
                 raise
     return article_list_analysis(article_list)
 
-def kaggel_Fact_Fake_analysis(path):
+def kaggle_Fact_Fake_analysis(path):
     df = pandas.read_csv(path)
     fake_df = df.loc[df['label'] == 1]
     real_df = df.loc[df['label'] == 0]
