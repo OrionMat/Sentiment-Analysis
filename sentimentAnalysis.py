@@ -86,11 +86,18 @@ all_fake_art_abs = np.concatenate((buzz_fake_art_abs, poli_fake_art_abs, kagg_fa
 all_real_art_abs = np.concatenate((buzz_real_art_abs, poli_real_art_abs, kagg_real_art_abs), axis=None)
 
 KS_buzz_art = stats.ks_2samp(buzz_fake_art_abs, buzz_real_art_abs)
-KS_buzz_sent = stats.ks_2samp(buzz_fake_flat_list, buzz_real_flat_list)
+KS_poli_art = stats.ks_2samp(poli_fake_art_abs, poli_real_art_abs)
+KS_kagg_art = stats.ks_2samp(kagg_fake_art_abs, kagg_real_art_abs)
+KS_all_art = stats.ks_2samp(all_fake_art_abs, all_real_art_abs)
+
+
+#KS_buzz_sent = stats.ks_2samp(buzz_fake_flat_list, buzz_real_flat_list)
 
 print('\n')
-print('buzz article abs K-S test:', KS_buzz_art, '\n')
-print('buzz sentence K-S test:', KS_buzz_sent, '\n')
+print('buzz article abs K-S test p-value:', KS_buzz_art[1], '\n')
+print('poli sentence K-S test p-value:', KS_poli_art[1], '\n')
+print('kagg sentence K-S test p-value:', KS_kagg_art[1], '\n')
+print('All sentence K-S test p-value:', KS_all_art[1], '\n')
 
 
 # Article dataframes:
@@ -122,6 +129,20 @@ df_news_BBC_article_abs = pandas.concat([df_news_busin_abs, df_news_enter_abs, d
 df_news_real = pandas.DataFrame({'Fact': all_real_article_sentiments})
 df_news_fake = pandas.DataFrame({'Fake': all_fake_article_sentiments})
 df_news_all_articles = pandas.concat([df_news_fake,df_news_real], axis=1)
+# abs
+df_news_fake = pandas.DataFrame({'Fake': buzz_fake_art_abs})
+df_news_real = pandas.DataFrame({'real': buzz_real_art_abs})
+df_news_buzz_art_abs = pandas.concat([df_news_fake,df_news_real], axis=1)
+df_news_fake = pandas.DataFrame({'Fake': poli_fake_art_abs})
+df_news_real = pandas.DataFrame({'real': poli_real_art_abs})
+df_news_poli_art_abs = pandas.concat([df_news_fake,df_news_real], axis=1)
+df_news_fake = pandas.DataFrame({'Fake': kagg_fake_art_abs})
+df_news_real = pandas.DataFrame({'real': kagg_real_art_abs})
+df_news_kagg_art_abs = pandas.concat([df_news_fake,df_news_real], axis=1)
+df_news_fake = pandas.DataFrame({'Fake': all_fake_art_abs})
+df_news_real = pandas.DataFrame({'real': all_fake_art_abs})
+df_news_all_art_abs = pandas.concat([df_news_fake, df_news_real], axis=1)
+
 
 # Sentence dataframes:
 # BuzzFeed
@@ -563,13 +584,26 @@ axes[0,0].set_title('BuzzFeed absolute article sentiments')
 axes[0,1].set_title('PolitiFact absolute article sentiments')
 axes[1,0].set_title('Kaggle absolute article sentiments')
 axes[1,1].set_title('All absolute article sentiments')
-#plt.xlabel('Article index')
-#plt.ylabel('Average Sentiment Intensity')
 
-#df_news_buzz_article = pandas.DataFrame({'Fake': buzz_fake_art_abs, 'Fact': buzz_real_art_abs})
-#df_news_buzz_article.plot.kde(title='BuzzFeed absolute KDE (articles)')
-#plt.xlabel('Article absolute sentiment intensity')
-#plt.ylabel('Density')
+# KDE abs
+fig, axes = plt.subplots(nrows=2, ncols=2)
+df_news_buzz_art_abs.plot.kde(title='BuzzFeed absolute KDE (articles)', ax=axes[0,0], color='rb')
+df_news_poli_art_abs.plot.kde(title='PolitiFact absolute KDE (articles)', ax=axes[0,1], color='rb')
+df_news_kagg_art_abs.plot.kde(title='Kaggle absolute KDE (articles)', ax=axes[1,0], color='rb')
+df_news_all_art_abs.plot.kde(title='All absolute KDE (articles)', ax=axes[1,1], color='rb')
+axes[0,0].set_xlabel('Article absolute sentiment intensity')
+axes[0,0].set_ylabel('Density')
+axes[0,0].legend(loc='upper right')
+axes[0,1].set_xlabel('Article absolute sentiment intensity')
+axes[0,1].set_ylabel('Density')
+axes[0,1].legend(loc='upper right')
+axes[1,0].set_xlabel('Article absolute sentiment intensity')
+axes[1,0].set_ylabel('Density')
+axes[1,0].legend(loc='upper right')
+axes[1,1].set_xlabel('Article absolute sentiment intensity')
+axes[1,1].set_ylabel('Density')
+axes[1,1].legend(loc='upper right')
+
 #
 #df_news_real = pandas.DataFrame({'Fact': np.absolute(np.asarray(buzz_real_flat_list))})
 #df_news_fake = pandas.DataFrame({'Fake': np.absolute(np.asarray(buzz_fake_flat_list))})
