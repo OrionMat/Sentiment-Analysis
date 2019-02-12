@@ -93,11 +93,14 @@ KS_all_art = stats.ks_2samp(all_fake_art_abs, all_real_art_abs)
 
 #KS_buzz_sent = stats.ks_2samp(buzz_fake_flat_list, buzz_real_flat_list)
 
+# very strict test: find more suitable tests
+# the lower the statistic value to more similar the distributions are
+# the higher the p value the more similare the distributions are
 print('\n')
-print('buzz article abs K-S test p-value:', KS_buzz_art[1], '\n')
-print('poli sentence K-S test p-value:', KS_poli_art[1], '\n')
-print('kagg sentence K-S test p-value:', KS_kagg_art[1], '\n')
-print('All sentence K-S test p-value:', KS_all_art[1], '\n')
+print('buzz article abs K-S test:', KS_buzz_art, '\n')
+print('poli article K-S test:', KS_poli_art, '\n')
+print('kagg article K-S test:', KS_kagg_art, '\n')
+print('All article K-S test:', KS_all_art, '\n')
 
 
 # Article dataframes:
@@ -140,7 +143,7 @@ df_news_fake = pandas.DataFrame({'Fake': kagg_fake_art_abs})
 df_news_real = pandas.DataFrame({'real': kagg_real_art_abs})
 df_news_kagg_art_abs = pandas.concat([df_news_fake,df_news_real], axis=1)
 df_news_fake = pandas.DataFrame({'Fake': all_fake_art_abs})
-df_news_real = pandas.DataFrame({'real': all_fake_art_abs})
+df_news_real = pandas.DataFrame({'real': all_real_art_abs})
 df_news_all_art_abs = pandas.concat([df_news_fake, df_news_real], axis=1)
 
 
