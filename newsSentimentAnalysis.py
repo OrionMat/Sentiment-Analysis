@@ -147,13 +147,13 @@ def get_article(url):
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # get article title
-    #title = soup.find('h1')
-    #title_txt = title.get_text() 
+    title = soup.find('h1')
+    title_txt = title.get_text() 
 
     # get all paragraphs in the article body
     articlebody = soup.find(attrs={"name": "articleBody"})
     if articlebody == None: # catches videos
-        return ""
+        return "",""
     all_paragraphs = articlebody.find_all('p')
 
     # get the text of all paragraphs and flatten them into an article
@@ -161,7 +161,8 @@ def get_article(url):
     for paragraph in all_paragraphs:
         text = paragraph.get_text()
         article = article + text
-    return(article)
+
+    return title_txt, article
 
 def nyt_scrape(url):
     response = requests.get(url)
@@ -174,17 +175,19 @@ def nyt_scrape(url):
         hyperlink = url.get('href')
         hyp_link_list = hyp_link_list + [hyperlink]
 
+    title_list = []
     article_list = []
     for hyp_link in hyp_link_list:
         url = 'https://www.nytimes.com'+ hyp_link
-        article = get_article(url)
-        if article:
+        title, article = get_article(url)
+        if title and article:
+            title_list = title_list + [title]
             article_list = article_list + [article]
 
 
-    return article_list
+    return title_list, article_list
 
 def nyt_scrape_analysis(url):
-    article_list = nyt_scrape(url)
+    title_list, article_list = nyt_scrape(url)
     sentence_list, sentence_sentiments, article_sentiments = article_list_analysis(article_list)
-    return sentence_list, sentence_sentiments, article_sentiments
+    return title_list, sentence_list, sentence_sentiments, article_sentiments
