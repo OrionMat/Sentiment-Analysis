@@ -179,7 +179,8 @@ bin_num = 'auto' # np.linspace(-4, 4, 50)
 # PLOTS
 
 
-#%% Article:# scatter plots:
+#%% Article:
+# # scatter plots:
 # BuzzFeed
 
 plt.figure("BuzzFeed article sentiments")
@@ -404,6 +405,45 @@ plt.title('All article sentiments')
 plt.xlabel('Article index')
 plt.ylabel('Average Sentiment Intensity')
 
+# Ordered plots
+plt.figure()
+# BuzzFeed
+plt.subplot(2, 2, 1)
+plt.plot(np.arange(1, len(buzz_fake_article_sentiments)+1), np.sort(buzz_fake_article_sentiments), 'r*', label='Fake')
+plt.plot(np.arange(1, len(buzz_real_article_sentiments)+1), np.sort(buzz_real_article_sentiments), 'g*', label='Fact')
+plt.axis([0, 100, -4, 4])
+plt.legend(loc='upper left')
+plt.title('BuzzFeed ordered article sentiments')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+# PolitiFact
+plt.subplot(2, 2, 2)
+plt.plot(np.arange(1, len(poli_fake_article_sentiments)+1), np.sort(poli_fake_article_sentiments), 'rx', label='Fake')
+plt.plot(np.arange(1, len(poli_real_article_sentiments)+1), np.sort(poli_real_article_sentiments), 'gx', label='Fact')
+plt.axis([0, 130, -4, 4])
+plt.legend(loc='upper left')
+plt.title('PolitiFact ordered article sentiments')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+# Kaggle
+plt.subplot(2, 2, 3)
+plt.plot(np.arange(1, len(kagg_fake_article_sentiments)+1), np.sort(kagg_fake_article_sentiments), 'r.', label='Fake')
+plt.plot(np.arange(1, len(kagg_real_article_sentiments)+1), np.sort(kagg_real_article_sentiments), 'g.', label='Fact')
+plt.axis([0, 110, -4, 4])
+plt.legend(loc='upper left')
+plt.title('Kaggle article sentiments')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+# All
+plt.subplot(2, 2, 4)
+plt.plot(np.arange(1, len(all_fake_article_sentiments)+1), np.sort(all_fake_article_sentiments), 'r.', label='Fake')
+plt.plot(np.arange(1, len(all_real_article_sentiments)+1), np.sort(all_real_article_sentiments), 'g.', label='Fact')
+plt.axis([0, 320, -4, 4])
+plt.legend(loc='upper left')
+plt.title('All article sentiments')
+plt.xlabel('Article index')
+plt.ylabel('Average Sentiment Intensity')
+
 # Histograms:
 plt.figure()
 # BuzzFeed
@@ -583,6 +623,38 @@ axes[0,0].legend(loc='upper right')
 axes[0,1].legend(loc='upper right')
 axes[1,0].legend(loc='upper right')
 axes[1,1].legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+axes[0,0].set_title('BuzzFeed absolute article sentiments')
+axes[0,1].set_title('PolitiFact absolute article sentiments')
+axes[1,0].set_title('Kaggle absolute article sentiments')
+axes[1,1].set_title('All absolute article sentiments')
+
+
+# ordered
+fig, axes = plt.subplots(nrows=2, ncols=2)
+axes[0,0].set_xlabel('Article index')
+axes[0,1].set_xlabel('Article index')
+axes[1,0].set_xlabel('Article index')
+axes[1,1].set_xlabel('Article index')
+axes[0,0].set_ylabel('Sentiment Intensity')
+axes[0,1].set_ylabel('Sentiment Intensity')
+axes[1,0].set_ylabel('Sentiment Intensity')
+axes[1,1].set_ylabel('Sentiment Intensity')
+axes[0,0].plot(np.arange(1, len(buzz_fake_art_abs)+1), np.sort(buzz_fake_art_abs), 'r*', label='Fake')
+axes[0,0].plot(np.arange(1, len(buzz_real_art_abs)+1), np.sort(buzz_real_art_abs), 'g*', label='Fact')
+axes[0,1].plot(np.arange(1, len(poli_fake_art_abs)+1), np.sort(poli_fake_art_abs), 'rx', label='Fake')
+axes[0,1].plot(np.arange(1, len(poli_real_art_abs)+1), np.sort(poli_real_art_abs), 'gx', label='Fact')
+axes[1,0].plot(np.arange(1, len(kagg_fake_art_abs)+1), np.sort(kagg_fake_art_abs), 'r.', label='Fake')
+axes[1,0].plot(np.arange(1, len(kagg_real_art_abs)+1), np.sort(kagg_real_art_abs), 'g.', label='Fact')
+axes[1,1].plot(np.arange(1, len(all_fake_art_abs)+1), np.sort(all_fake_art_abs), 'r.', label='Fake')
+axes[1,1].plot(np.arange(1, len(all_real_art_abs)+1), np.sort(all_real_art_abs), 'g.', label='Fact')
+axes[0,0].axis([0, 100, -1, 4])
+axes[0,1].axis([0, 130, -1, 4])
+axes[1,0].axis([0, 110, -1, 4])
+axes[1,1].axis([0, 340, -1, 4])
+axes[0,0].legend(loc='upper left')
+axes[0,1].legend(loc='upper left')
+axes[1,0].legend(loc='upper left')
+axes[1,1].legend(loc='upper left')
 axes[0,0].set_title('BuzzFeed absolute article sentiments')
 axes[0,1].set_title('PolitiFact absolute article sentiments')
 axes[1,0].set_title('Kaggle absolute article sentiments')
