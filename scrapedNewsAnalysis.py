@@ -65,7 +65,6 @@ nyt_world_url = 'https://www.nytimes.com/section/world'
 NYTscrap_opinion_title_list, NYTscrap_opinion_sentence_list, NYTscrap_opinion_sentence_sentiments, NYTscrap_opinion_article_sentiments = NSA.nyt_scrape_analysis(nyt_opinion_url)
 NYTscrap_world_title_list, NYTscrap_world_sentence_list, NYTscrap_world_sentence_sentiments, NYTscrap_world_article_sentiments = NSA.nyt_scrape_analysis(nyt_world_url)
 
-#%%
 news_dicList = lists_to_dictList('NYT opinion', NYTscrap_opinion_title_list, NYTscrap_opinion_sentence_list)
 print(news_dicList)
 #news_dictionary = dict(zip(NYTscrap_opinion_title_list, NYTscrap_opinion_sentence_list))
@@ -78,6 +77,7 @@ append_csv(csv_file_path, csv_columns, news_dicList)     # use rest of the time
 
 
 
+#%% CURRENT NEWS ANALYSIS
 
 NYTscrap_opinion_flat_list = [item for sublist in NYTscrap_opinion_sentence_sentiments for item in sublist]
 NYTscrap_world_flat_list = [item for sublist in NYTscrap_world_sentence_sentiments for item in sublist]
