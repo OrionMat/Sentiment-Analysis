@@ -36,10 +36,7 @@ def append_csv(csv_file, csv_headers, dict_data):
             writer = csv.DictWriter(csvfile, fieldnames=csv_headers)
             for data in dict_data:
                 if data['title'] not in title_list:
-                    print('\n\n', 'check 1')
-                    print(data)
                     writer.writerow(data)
-                    print('\n\n', 'check 2')
                 else:
                     indices = [i for i, x in enumerate(title_list) if x == data['title']]   # gets list of indexes where title is the same
                     agencies = [agency_list[index] for index in indices]                    # selects the correspoding agencies
