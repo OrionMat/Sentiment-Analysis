@@ -10,6 +10,13 @@ import data_saving as save_to_CSV
 
 
 
+query = "Ethiopian Airlines plane crashed"
+# Shares in Boeing fell by 12.9% on Monday in the wake of the crash
+
+
+
+
+
 #%% New York Times: 
 
 # gets NYT links from google with article dates
@@ -88,10 +95,6 @@ def NYT_page_scrape(url):
             article_list = article_list + [article]
     return title_list, article_list
 
-
-
-
-
 #%% BBC:
 
 # gets BBC links from google with article dates
@@ -151,40 +154,29 @@ def BBC_article_scrape(url):
 
 
 
-query = "Ethiopian Airlines plane crashed"
-# Shares in Boeing fell by 12.9% on Monday in the wake of the crash
 
+# %% query seach and save to CSV
 
+csv_file_path = 'consensus_data.csv'
+csv_columns = ['agency', 'title', 'date', 'article', 'link']
+save_to_CSV.initiate_csv(csv_file_path, csv_columns)
 
-
-
-#%% NYT CSV
-
+# NYT:
 url_list, date_list = google_NYT_links(query)
 title_list, article_list = NYT_links_scrape(url_list)
 #for idx in range(len(title_list)):
 #    print(date_list[idx], "  :  ", title_list[idx], "  :  ", url_list[idx])
-#for idx in range(2):
-#    print(url_list[idx], '\n', article_list[idx], '\n\n\n\n')
+#    print(article_list[idx][0:50], '\n')
 news_dicList = save_to_CSV.lists_to_dictList('NYT', title_list, date_list, article_list, url_list)
-print(news_dicList)
-csv_file_path = 'consensus_data.csv'
-csv_columns = ['agency', 'title', 'date', 'article', 'link']
-save_to_CSV.initiate_csv(csv_file_path, csv_columns)
 save_to_CSV.append_csv(csv_file_path, csv_columns, news_dicList)     # use rest of the time
 
-
-
-
-
-#%% BBC CSV
-
+# BBC:
 url_list = google_BBC_links(query)
 title_list, article_list, date_list = BBC_links_scrape(url_list)
 #for idx in range(len(title_list)):
-#    print(date_list[idx], "  :  ", title_list[idx], "  :  ", article_list[idx][0:15])
+#    print(date_list[idx], "  :  ", title_list[idx], "  :  ", url_list[idx])
+#    print(article_list[idx][0:50], '\n')
 news_dicList = save_to_CSV.lists_to_dictList('BBC', title_list, date_list, article_list, url_list)
-print(news_dicList)
 csv_file_path = 'consensus_data.csv'
 csv_columns = ['agency', 'title', 'date', 'article', 'link']
 save_to_CSV.append_csv(csv_file_path, csv_columns, news_dicList)     # use rest of the time
