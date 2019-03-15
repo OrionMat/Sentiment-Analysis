@@ -4,6 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 from googlesearch import search
 import re 
+import data_saving as save_to_CSV
+
 
 
 
@@ -93,6 +95,21 @@ def NYT_links_scrape(link_list):
 query = "Ethiopian Airlines plane crashed"
 url_list, date_list = google_NYT_links(query)
 title_list, article_list = NYT_links_scrape(url_list)
-
 #for idx in range(len(title_list)):
 #    print(date_list[idx], "  :  ", title_list[idx], "  :  ", url_list[idx])
+
+#for idx in range(2):
+#    print(url_list[idx], '\n', article_list[idx], '\n\n\n\n')
+
+
+
+#%% NYT CSV
+
+news_dicList = save_to_CSV.lists_to_dictList('NYT', title_list, date_list, article_list, url_list)
+print(news_dicList)
+
+csv_file_path = 'consensus_data.csv'
+csv_columns = ['agency', 'title', 'date', 'article', 'link']
+
+save_to_CSV.initiate_csv(csv_file_path, csv_columns)
+save_to_CSV.append_csv(csv_file_path, csv_columns, news_dicList)     # use rest of the time
