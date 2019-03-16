@@ -13,6 +13,7 @@ import data_saving as save_to_CSV
 query = "Ethiopian Airlines plane crashed"
 # Shares in Boeing fell by 12.9% on Monday in the wake of the crash
 # Can Trump declare a national emergency to build a wall?
+# New Zealand mosque shootings
 
 
 
@@ -207,6 +208,63 @@ def AP_article_scrape(url):
     date = date_location.get_text()
     return headline, article, date
 
+#%% reuters
+
+# gets reuters links from google
+def google_reuters_links(query):
+    reuters_query = "reuters + " + query
+    article_links = search(reuters_query, tld="com", num=15, stop=10, pause=2)    # gets 15 top links from google
+    url_list = []
+    for link in article_links:
+        if (re.search(r"reuters.com/article", link) != None):
+            url_list = url_list + [link]
+    return url_list
+
+# gets a list of reuters articles and their corresponing headlines and dates from a list of links
+def reuters_links_scrape(link_list):
+    title_list = []
+    article_list = []
+    date_list = []
+    for link in link_list:
+        title, article, date = reuters_article_scrape(link)
+        if title and article and date:
+            title_list = title_list + [title]
+            article_list = article_list + [article]
+            date_list = date_list + [date]
+    return title_list, article_list, date_list
+
+# scrapes a reuters article, its headline and its date
+def reuters_article_scrape(url):
+    # get webpage
+    try:
+        response = requests.get(url)
+    except:
+        print("no response from webpage. Error: ", sys.exc_info()[0])
+        raise
+    soup = BeautifulSoup(response.text, 'html.parser')
+    # get article title
+    title = soup.find('h1')
+    if title == None:
+        print("reuters article title not found")
+        return "", "", ""
+    headline = title.get_text() 
+    # get all paragraphs in the article body
+    articlebody = soup.find(attrs={"class": "StandardArticleBody_body"}) 
+    if articlebody == None: # catches videos
+        return "","", ""
+    all_paragraphs = articlebody.find_all('p')
+    # get the text of all paragraphs and flatten them into an article
+    article = ''
+    for paragraph in all_paragraphs:
+        text = paragraph.get_text()
+        article = article + text
+    # get article date
+    date_location = soup.find(attrs={"class": "ArticleHeader_date"})
+    date = date_location.get_text()
+    return headline, article, date
+
+
+
 
 
 # %% query seach and save to CSV
@@ -244,3 +302,13 @@ title_list, article_list, date_list = AP_links_scrape(url_list)
 if title_list and date_list and article_list and url_list:
     news_dicList = save_to_CSV.lists_to_dictList('AP', title_list, date_list, article_list, url_list)
     save_to_CSV.append_csv(csv_file_path, csv_columns, news_dicList)   
+    
+# Reuters:
+url_list = google_reuters_links(query)
+title_list, article_list, date_list = reuters_links_scrape(url_list)
+for idx in range(len(title_list)):
+    print(date_list[idx], "  :  ", title_list[idx], "  :  ", url_list[idx])
+    print(article_list[idx][0:50], '\n')
+if title_list and date_list and article_list and url_list:
+    news_dicList = save_to_CSV.lists_to_dictList('reuters', title_list, date_list, article_list, url_list)
+    save_to_CSV.append_csv(csv_file_path, csv_columns, news_dicList) 
