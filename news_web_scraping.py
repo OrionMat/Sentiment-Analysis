@@ -10,7 +10,7 @@ import data_saving as save_to_CSV
 
 
 
-query = "Ethiopian Airlines plane crashed"
+query = "Can Trump declare a national emergency to build a wall?"
 # Shares in Boeing fell by 12.9% on Monday in the wake of the crash
 # Can Trump declare a national emergency to build a wall?
 # New Zealand mosque shootings
@@ -306,9 +306,9 @@ if title_list and date_list and article_list and url_list:
 # Reuters:
 url_list = google_reuters_links(query)
 title_list, article_list, date_list = reuters_links_scrape(url_list)
-for idx in range(len(title_list)):
-    print(date_list[idx], "  :  ", title_list[idx], "  :  ", url_list[idx])
-    print(article_list[idx][0:50], '\n')
+#for idx in range(len(title_list)):
+#    print(date_list[idx], "  :  ", title_list[idx], "  :  ", url_list[idx])
+#    print(article_list[idx][0:50], '\n')
 if title_list and date_list and article_list and url_list:
     news_dicList = save_to_CSV.lists_to_dictList('reuters', title_list, date_list, article_list, url_list)
     save_to_CSV.append_csv(csv_file_path, csv_columns, news_dicList) 
