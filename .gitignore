@@ -2671,3 +2671,4 @@ News_Data/reliable-nonreliable-news-kaggle/test.csv
 News_Data/reliable-nonreliable-news-kaggle/train.csv
 __pycache__/newsSentimentAnalysis.cpython-36.pyc
 fake-news-kaggle/fake.csv
+consensus_data.csv

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Report summary</title>
+        <script src="jquery-3.4.0.min.js"></script>
+        <script src="popup.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            /* tr:nth-child(1) {
+                background-color: #dddddd;
+            } */
+
+            .loader {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                z-index: 1;
+                width: 150px;
+                height: 150px;
+                margin: -75px 0 0 -75px;
+                border: 16px solid #f3f3f3;
+                border-radius: 50%;
+                border-top: 16px solid #3498db;
+                width: 120px;
+                height: 120px;
+                -webkit-animation: spin 2s linear infinite;
+                animation: spin 2s linear infinite;
+            }
+            </style>
+    </head>
+    <body>
+        <h4 id= statementTitle style="font-family: 'Karla', sans-serif; font-size: 16px;"> Analyse Text</h4>
+        <!-- <div id="tablePrint"> </div> -->
+        <div>
+            <table>
+                <tr>
+                    <th>Average Sentiment Score</th>
+                    <th>Average Absolute Sentiment Score</th> 
+                </tr>
+                <tr>
+                    <td id="result0"></td>
+                    <td id="result1"></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
