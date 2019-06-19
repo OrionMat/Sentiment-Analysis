@@ -11,7 +11,7 @@ $(function(){
         result_array = JSON.parse(result.results)
 
         var i;
-        for(i = 0; i<2; i++){
+        for(i = 0; i<5; i++){
             $('#result' + String(i)).text(result_array[i]);
         }
     });

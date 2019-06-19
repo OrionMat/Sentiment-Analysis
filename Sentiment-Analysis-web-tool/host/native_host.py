@@ -43,7 +43,9 @@ def results_calculation(sentiment_list):
     sentiment_avg = np.round(np.mean(sentiment_array),  decimals=3, out=None)
     sentiment_avg_abs = np.round(np.mean(np.absolute(sentiment_array)),  decimals=3, out=None)
     sentiment_var = np.round(np.var(sentiment_array),  decimals=3, out=None)
-    return sentiment_avg, sentiment_avg_abs, sentiment_var
+    sentiment_max = np.round(np.max(sentiment_array),  decimals=3, out=None)
+    sentiment_min = np.round(np.min(sentiment_array),  decimals=3, out=None)
+    return sentiment_avg, sentiment_avg_abs, sentiment_var, sentiment_max, sentiment_min
 
 send_message({"name" : "test", "text" : "testing messaging"})
 
@@ -55,10 +57,10 @@ sentence_list, sentiment_list = calcSentiment(query)
 # for idx in range(len(sentence_list)):
 #     print(str(sentence_list[idx]) + " : " + str(sentiment_list[idx]) + "\n")
 
-sentiment_avg, sentiment_avg_abs, sentiment_var = results_calculation(sentiment_list)
+sentiment_avg, sentiment_avg_abs, sentiment_var, sentiment_max, sentiment_min = results_calculation(sentiment_list)
 # print(sentiment_avg, sentiment_avg_abs, sentiment_var)
 
-result_list = [sentiment_avg] + [sentiment_avg_abs]
+result_list = [sentiment_avg] + [sentiment_avg_abs] + [sentiment_max] + [sentiment_min] + [sentiment_var]
 results = json.dumps(result_list)
 send_message({"name" : "articleResults", "text" : "sending results of articles", "results" : results})
 
